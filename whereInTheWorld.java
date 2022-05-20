@@ -47,7 +47,7 @@ public class whereInTheWorld {
             String[] latAndLong = seperateIntoArray(userInput);
 
             //Happens Before here
-            System.out.println("2: " + Arrays.toString(latAndLong)); //Debugging
+            System.out.println("After Seperation Method: " + Arrays.toString(latAndLong)); //Debugging
 
             
 
@@ -75,10 +75,10 @@ public class whereInTheWorld {
 
             // Check decimal Places
             for (int i = 0; i < latAndLong.length; i++) {
-                System.out.println(latAndLong[i]); //Debugging
+                //System.out.println("DECIMALS 8: " + latAndLong[i]); //Debugging
 
                 String[] decimalArray = latAndLong[i].split("[.]");
-                System.out.println(Arrays.toString(decimalArray)); //Debugging
+                //System.out.println(Arrays.toString(decimalArray)); //Debugging
 
                 if (decimalArray.length == 2) {
                     if (decimalArray[1].length() != 6) {
@@ -98,11 +98,11 @@ public class whereInTheWorld {
             if (latIsValid && longIsValid) {
                 addToContent(latAndLong[0], latAndLong[1]);
                 validCoords = Arrays.toString(latAndLong);
-                System.out.println(validCoords);
+                System.out.println("Final: " + validCoords);
                 writeToFile(content, "map1.geojson");
             } else {
                 errorMessage = "Cannot Convert";
-                System.out.println(Arrays.toString(latAndLong)); //Debugging
+                System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage);
                 continue;
 
@@ -150,13 +150,17 @@ public class whereInTheWorld {
             }
             String[] latAndLong = userInput.split(",");//Split into array
 
-            //for (int i = 0; i < latAndLong.length; i++) {
-              //  if ((latAndLong[i].substring(0, 1)).equals("-")) {
-                //    System.out.println(latAndLong[i]);
-                //} else {
+            //Looks for '-' - don't know why
+            /*
+            for (int i = 0; i < latAndLong.length; i++) {
+                if ((latAndLong[i].substring(0, 1)).equals("-")) {
+                    System.out.println(latAndLong[i]);
+                } else {
                     
-                //}
-            //}
+                }
+            }
+            */
+
             //Convert to E, S, W, N's
             for (int i = 0; i < latAndLong.length; i++) {
                 latAndLong[i] = replaceNESWCoorinate(latAndLong[i]);
@@ -164,7 +168,7 @@ public class whereInTheWorld {
 
             //Check order of lat and long
             latAndLong = checkOrderOfLatAndLong(latAndLong);
-            System.out.println("3: " + Arrays.toString(latAndLong)); //Debugging
+            //System.out.println("3: " + Arrays.toString(latAndLong)); //Debugging
 
 
             //Convert E, S, W, N's
@@ -185,7 +189,7 @@ public class whereInTheWorld {
             if (amountOfLetters != 0) {
 
                 String[] latAndLongAndCompass = userInput.split(" ");
-                System.out.println(Arrays.toString(latAndLongAndCompass));
+                System.out.println("5: " + Arrays.toString(latAndLongAndCompass));
                 String[] latAndLongCompassValid = new String[amountOfLetters + 2];
                 int count = 0;
                 //Get rid of extra spaces
@@ -199,12 +203,13 @@ public class whereInTheWorld {
                         count++;
                     }
                 }
-                System.out.println(Arrays.toString(latAndLongCompassValid));//debugging
+                System.out.println("Compass before: " + Arrays.toString(latAndLongCompassValid));//debugging
 
 
                 String[] latAndLong = new String[2];
                 int coordsIndex = 0;
                 int count2 = 0;
+                System.out.println("latAndLong Before: " + Arrays.toString(latAndLong));//debugging
                 for (int i = 0; i < latAndLongCompassValid.length; i++) {
 
                     if (Character.isLetter(latAndLongCompassValid[i].charAt(0))) {
@@ -213,18 +218,22 @@ public class whereInTheWorld {
                             case 'E':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "E";
                                 count2++;
+                System.out.println("E: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'W':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "W";
                                 count2++;
+                System.out.println("W: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'N':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "N";
                                 count2++;
+                System.out.println("N: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'S':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "S";
                                 count2++;
+                System.out.println("S: " + Arrays.toString(latAndLong)); //debugging
                                 break;
                             default:
                                 break;
@@ -233,7 +242,7 @@ public class whereInTheWorld {
                         coordsIndex = i;
                     }
                 }
-                System.out.println(Arrays.toString(latAndLong));
+                System.out.println("7: " + Arrays.toString(latAndLong));
 
                 //Check order of lat and long
                 latAndLong = checkOrderOfLatAndLong(latAndLong);
@@ -298,15 +307,15 @@ public class whereInTheWorld {
         for (int i = 0; i < latAndLong.length; i++) {
             if ((latAndLong[i].contains("N") || latAndLong[i].contains("S")) && i != 0) {
                 validLatLong = swapCoords(latAndLong);
-                System.out.println("swapped coords");//Debugging
-                System.out.println(Arrays.toString(validLatLong)); //Debugging
+                //System.out.println("swapped coords");//Debugging
+                //System.out.println(Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
 
 
             } else if ((latAndLong[i].contains("W") || latAndLong[i].contains("E")) && i != 1) {
                 validLatLong = swapCoords(latAndLong);
-                System.out.println("swapped coords");//Debugging
-                System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
+                //System.out.println("swapped coords");//Debugging
+                //System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
                 
             } else {
@@ -331,25 +340,25 @@ public class whereInTheWorld {
                 return null;
             }
             userInput = userInput.replaceAll("N", "");
-            System.out.println("N: " + userInput);//debugging
+            //System.out.println("N: " + userInput);//debugging
         }
         if (userInput.contains("S")) {
             userInput = userInput.replaceAll("S", "");
             userInput = "-" + userInput;
-            System.out.println("S: " + userInput);//debugging
+            //System.out.println("S: " + userInput);//debugging
         }
         if (userInput.contains("E")) {
             if (userInput.contains("-")) {
                 return null;
             }
             userInput = userInput.replaceAll("E", "");
-            System.out.println("E: " + userInput);//debugging
+            //System.out.println("E: " + userInput);//debugging
         }
         if (userInput.contains("W")) {
             userInput = userInput.replaceAll("W", "");
             userInput = "-" + userInput;
 
-            System.out.println("W: " + userInput);//debugging
+            //System.out.println("W: " + userInput);//debugging
         }
 
         return userInput;
