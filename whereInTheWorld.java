@@ -8,7 +8,6 @@ import java.util.regex.*;
 
 /**
  * Inputs that still dont work
- * -12W, 12 - Not swapping
  * 12 W 12
  * 12 12 W
  * 
@@ -17,6 +16,7 @@ import java.util.regex.*;
  * Degress and decimal minutes form
  * 
  * Fixed:
+ * -12W, 12 - Not swapping
  * -12E, 12S - fixed (Cannot Convert because -12E is invalid)
  */
 
@@ -45,6 +45,10 @@ public class whereInTheWorld {
 
             //Seperate into an array with Lat and Long in spereate spaces
             String[] latAndLong = seperateIntoArray(userInput);
+
+            //Happens Before here
+            System.out.println("2: " + Arrays.toString(latAndLong)); //Debugging
+
             
 
             //Check to see if array seems correct
@@ -66,7 +70,8 @@ public class whereInTheWorld {
                 latAndLong[i] = latAndLong[i].replaceAll("-+", "-"); 
             }
 
-            System.out.println(Arrays.toString(latAndLong)); //Debugging
+            // Happens before here
+            //System.out.println("1: " + Arrays.toString(latAndLong)); //Debugging
 
             // Check decimal Places
             for (int i = 0; i < latAndLong.length; i++) {
@@ -100,8 +105,10 @@ public class whereInTheWorld {
                 System.out.println(Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage);
                 continue;
-                
+
             }
+            
+            //Code sees if valid lat and long if values are swapped
                 /*else {
                 // Check to see if coords were the wrong way around
                 latIsValid = Pattern.matches(STANDARD_LONG, latAndLong[0]);
@@ -157,6 +164,8 @@ public class whereInTheWorld {
 
             //Check order of lat and long
             latAndLong = checkOrderOfLatAndLong(latAndLong);
+            System.out.println("3: " + Arrays.toString(latAndLong)); //Debugging
+
 
             //Convert E, S, W, N's
             for (int i = 0; i < latAndLong.length; i++) {
@@ -290,13 +299,19 @@ public class whereInTheWorld {
             if ((latAndLong[i].contains("N") || latAndLong[i].contains("S")) && i != 0) {
                 validLatLong = swapCoords(latAndLong);
                 System.out.println("swapped coords");//Debugging
+                System.out.println(Arrays.toString(validLatLong)); //Debugging
+                return validLatLong;
+
 
             } else if ((latAndLong[i].contains("W") || latAndLong[i].contains("E")) && i != 1) {
                 validLatLong = swapCoords(latAndLong);
                 System.out.println("swapped coords");//Debugging
+                System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
+                return validLatLong;
                 
             } else {
                 validLatLong = latAndLong;
+                //return validLatLong;
             }
         }
         return validLatLong;
