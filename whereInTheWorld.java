@@ -9,7 +9,7 @@ import java.util.regex.*;
  * Inputs that still dont work
  * 
  * Still haven't done:
- * "Degrees, minuets, seconds" form
+ * "Degrees, minutes, seconds" form
  * Degress and decimal minutes form
  * 
  * Fixed:
