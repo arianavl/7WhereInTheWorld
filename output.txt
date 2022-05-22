@@ -1,0 +1,49 @@
+userInput: 12.000000, 12.000000
+After Seperation Method: [12.000000, 12.000000]
+Final: [12.000000, 12.000000]
+userInput: 12.000000 12.000000
+After Seperation Method: [12.000000, 12.000000]
+Final: [12.000000, 12.000000]
+userInput: -12.000000, -12.000000
+After Seperation Method: [-12.000000, -12.000000]
+Final: [-12.000000, -12.000000]
+userInput: 12.0, 12
+After Seperation Method: [12.0, 12]
+Final: [12.000000, 12.000000]
+userInput: 12 12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+userInput: 180, 12
+After Seperation Method: [180, 12]
+20: Lat and Long not valid[180.000000, 12.000000]
+Cannot Convert
+userInput: -12E, -12S
+After Seperation Method: [--12, null]
+Cannot convert
+userInput: 12south, 12east
+After Seperation Method: [-12, 12]
+Final: [-12.000000, 12.000000]
+userInput: 12 north 12 west
+5: [12, N, 12, W]
+Compass before: [12, N, 12, W]
+latAndLong Before: [null, null]
+N: [12N, null]
+W: [12N, 12W]
+7: [12N, 12W]
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+userInput: 12 n, 12 s
+After Seperation Method: [-12, 12]
+Final: [-12.000000, 12.000000]
+userInput: 12.123123412, 12.123
+After Seperation Method: [12.123123412, 12.123]
+Final: [12.123123, 12.123000]
+userInput: 12,,, 12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+userInput: 12 E 12
+5: [12, E, 12]
+Compass before: [12, E, 12]
+latAndLong Before: [null, null]
+E: [12E, null]
+7: [12E, null]

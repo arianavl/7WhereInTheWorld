@@ -2,14 +2,12 @@
 
 import java.util.*;
 import java.io.FileWriter;
-//import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.regex.*;
 
 /**
  * Inputs that still dont work
- * 12 W 12
- * 12 12 W
+ * 
  * 
  * Still haven't done:
  * "Degrees, minuets, seconds" form
@@ -18,6 +16,8 @@ import java.util.regex.*;
  * Fixed:
  * -12W, 12 - Not swapping
  * -12E, 12S - fixed (Cannot Convert because -12E is invalid)
+ * 12 W 12
+ * 12 12 W
  */
 
 /**
@@ -41,6 +41,7 @@ public class whereInTheWorld {
         Scanner scan = new Scanner(System.in);
         while (scan.hasNextLine()) {
             String userInput = scan.nextLine();
+            System.out.println("userInput: " + userInput); //Debugging
             errorMessage = "";
 
             //Seperate into an array with Lat and Long in spereate spaces
@@ -122,8 +123,8 @@ public class whereInTheWorld {
                 
             }*/
 
-            System.out.println("lat: " + latIsValid);//Debugging
-            System.out.println("long: " + longIsValid);//Debugging
+            //System.out.println("lat: " + latIsValid);//Debugging
+            //System.out.println("long: " + longIsValid);//Debugging
         
 
         }
@@ -205,42 +206,55 @@ public class whereInTheWorld {
                 }
                 System.out.println("Compass before: " + Arrays.toString(latAndLongCompassValid));//debugging
 
+                if (latAndLongCompassValid.length == 3) {
+                    
+                }
+
 
                 String[] latAndLong = new String[2];
                 int coordsIndex = 0;
                 int count2 = 0;
                 System.out.println("latAndLong Before: " + Arrays.toString(latAndLong));//debugging
                 for (int i = 0; i < latAndLongCompassValid.length; i++) {
+                    System.out.println(i); //debugging
+                    System.out.println(latAndLongCompassValid.length); //debugging
 
                     if (Character.isLetter(latAndLongCompassValid[i].charAt(0))) {
                         char compass = latAndLongCompassValid[i].charAt(0);
+                        latAndLong[count2] = latAndLongCompassValid[coordsIndex] + compass;
+                        count2++;
+                        /*
                         switch (compass) {
                             case 'E':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "E";
                                 count2++;
-                System.out.println("E: " + Arrays.toString(latAndLong));//debugging
+                                System.out.println("E: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'W':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "W";
                                 count2++;
-                System.out.println("W: " + Arrays.toString(latAndLong));//debugging
+                                System.out.println("W: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'N':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "N";
                                 count2++;
-                System.out.println("N: " + Arrays.toString(latAndLong));//debugging
+                                System.out.println("N: " + Arrays.toString(latAndLong));//debugging
                                 break;
                             case 'S':
                                 latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "S";
                                 count2++;
-                System.out.println("S: " + Arrays.toString(latAndLong)); //debugging
+                                System.out.println("S: " + Arrays.toString(latAndLong)); //debugging
                                 break;
                             default:
                                 break;
                         }
+                        */
                     } else {
                         coordsIndex = i;
                     }
+                }
+                if (latAndLong[1] == null) {
+                    latAndLong[1] = latAndLongCompassValid[coordsIndex];
                 }
                 System.out.println("7: " + Arrays.toString(latAndLong));
 
