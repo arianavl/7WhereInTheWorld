@@ -8,7 +8,6 @@ import java.util.regex.*;
 /**
  * Inputs that still dont work
  * 
- * 
  * Still haven't done:
  * "Degrees, minuets, seconds" form
  * Degress and decimal minutes form
@@ -18,6 +17,8 @@ import java.util.regex.*;
  * -12E, 12S - fixed (Cannot Convert because -12E is invalid)
  * 12 W 12
  * 12 12 W
+ * 12 n 12 s
+ * 
  */
 
 /**
@@ -41,6 +42,8 @@ public class whereInTheWorld {
         Scanner scan = new Scanner(System.in);
         while (scan.hasNextLine()) {
             String userInput = scan.nextLine();
+            System.out.println();//debugging
+
             System.out.println("userInput: " + userInput); //Debugging
             errorMessage = "";
 
@@ -126,7 +129,6 @@ public class whereInTheWorld {
             //System.out.println("lat: " + latIsValid);//Debugging
             //System.out.println("long: " + longIsValid);//Debugging
         
-
         }
 
         scan.close();
@@ -216,39 +218,13 @@ public class whereInTheWorld {
                 int count2 = 0;
                 System.out.println("latAndLong Before: " + Arrays.toString(latAndLong));//debugging
                 for (int i = 0; i < latAndLongCompassValid.length; i++) {
-                    System.out.println(i); //debugging
-                    System.out.println(latAndLongCompassValid.length); //debugging
+                    //System.out.println(i); //debugging
+                    //System.out.println(latAndLongCompassValid.length); //debugging
 
                     if (Character.isLetter(latAndLongCompassValid[i].charAt(0))) {
                         char compass = latAndLongCompassValid[i].charAt(0);
                         latAndLong[count2] = latAndLongCompassValid[coordsIndex] + compass;
                         count2++;
-                        /*
-                        switch (compass) {
-                            case 'E':
-                                latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "E";
-                                count2++;
-                                System.out.println("E: " + Arrays.toString(latAndLong));//debugging
-                                break;
-                            case 'W':
-                                latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "W";
-                                count2++;
-                                System.out.println("W: " + Arrays.toString(latAndLong));//debugging
-                                break;
-                            case 'N':
-                                latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "N";
-                                count2++;
-                                System.out.println("N: " + Arrays.toString(latAndLong));//debugging
-                                break;
-                            case 'S':
-                                latAndLong[count2] = latAndLongCompassValid[coordsIndex] + "S";
-                                count2++;
-                                System.out.println("S: " + Arrays.toString(latAndLong)); //debugging
-                                break;
-                            default:
-                                break;
-                        }
-                        */
                     } else {
                         coordsIndex = i;
                     }
@@ -318,25 +294,48 @@ public class whereInTheWorld {
      */
     public static String[] checkOrderOfLatAndLong(String[] latAndLong) {
         String[] validLatLong = new String[2];
+        int n = 0;
+        int s = 0;
+        int w = 0;
+        int e = 0;
         for (int i = 0; i < latAndLong.length; i++) {
-            if ((latAndLong[i].contains("N") || latAndLong[i].contains("S")) && i != 0) {
+            if (latAndLong[i].contains("N")) {
+                n++;
+            } else if (latAndLong[i].contains("E")) {
+                e++;
+            } else if (latAndLong[i].contains("S")) {
+                s++;
+            } else if (latAndLong[i].contains("W")) {
+                w++;
+            }
+        }
+        if (n > 1 || s > 1 || e > 1 || w > 1) {
+            errorMessage = "Cannot Convert";
+            return latAndLong;
+        } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
+            errorMessage = "Cannot Convert";
+            return latAndLong;
+        }
+        for (int j = 0; j < latAndLong.length; j++) {
+
+            if ((latAndLong[j].contains("N") || latAndLong[j].contains("S")) && j != 0) {
                 validLatLong = swapCoords(latAndLong);
                 //System.out.println("swapped coords");//Debugging
                 //System.out.println(Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
 
-
-            } else if ((latAndLong[i].contains("W") || latAndLong[i].contains("E")) && i != 1) {
+            } else if ((latAndLong[j].contains("W") || latAndLong[j].contains("E")) && j != 1) {
                 validLatLong = swapCoords(latAndLong);
                 //System.out.println("swapped coords");//Debugging
                 //System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
-                
+
             } else {
                 validLatLong = latAndLong;
                 //return validLatLong;
             }
         }
+    
         return validLatLong;
     }
 
