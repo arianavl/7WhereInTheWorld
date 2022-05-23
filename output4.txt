@@ -22,15 +22,19 @@ Final: [12.000000, 12.000000]
 userInput: 180, 12
 After Seperation Method: [180, 12]
 20: Lat and Long not valid[180.000000, 12.000000]
-Cannot Convert180, 12
+Unable to Process: 180, 12
 
 userInput: 12,,12
 After Seperation Method: [12, 12]
 Final: [12.000000, 12.000000]
 
 userInput: 12    12
-After Seperation Method: [12, , , , 12]
-Unable to process: 12    12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput:     12   12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
 
 userInput: -12E, -12S
 After Seperation Method: [--12, null]
@@ -103,31 +107,62 @@ Unable to process: 12 w 12 E
 userInput: 12, w, 12, S
 After Seperation Method: [-, 12]
 20: Lat and Long not valid[-.000000, 12.000000]
-Cannot Convert12, w, 12, S
+Unable to Process: 12, w, 12, S
 
 userInput: 12 12' 12" 12 12' 12"
 After Seperation Method: [12.203333333333333, 12.203333333333333]
 Final: [12.203333, 12.203333]
 
+userInput: 12 12' 12", 12 12' 12"
+After Seperation Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
+
 userInput: 12 12 12 12 12 12
-After Seperation Method: [12, 12, 12, 12, 12, 12]
-Unable to process: 12 12 12 12 12 12
+After Seperation Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
 
 userInput: 12 12 12, 12 12 12
-After Seperation Method: [121212, 121212]
-20: Lat and Long not valid[121212.000000, 121212.000000]
-Cannot Convert12 12 12, 12 12 12
+After Seperation Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
 
 userInput: 12 12' 12" S, 12 12' 12" E
-After Seperation Method: [12, 12, 12, S, , 12, 12, 12, E]
-Unable to process: 12 12' 12" S, 12 12' 12" E
+Hiiii [12.203333333333333S, null]
+Hiiii [12.203333333333333S, 12.203333333333333E]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
 
 userInput: 12 12 12 S 12 12 12 E
-More then length 4 : [12, 12, 12, S, 12, 12, 12, E]
-After Seperation Method: [12, 12, 12, S, 12, 12, 12, E]
-Unable to process: 12 12 12 S 12 12 12 E
+Hiiii [12.203333333333333S, null]
+Hiiii [12.203333333333333S, 12.203333333333333E]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
 
 userInput: 12 12 12 S, 12 12 12 E
-After Seperation Method: [-121212, 121212]
-20: Lat and Long not valid[-121212.000000, 121212.000000]
-Cannot Convert12 12 12 S, 12 12 12 E
+Hiiii [12.203333333333333S, null]
+Hiiii [12.203333333333333S, 12.203333333333333E]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: S 12 12 12, E 12 12 12
+Hiiii [12.203333333333333S, null]
+Hiiii [12.203333333333333S, 12.203333333333333E]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: south 12 12 12, east 12 12 12
+Hiiii [12.203333333333333south, null]
+Hiiii [12.203333333333333south, 12.203333333333333east]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: west 12 12 12, east 12 12 12
+Hiiii [12.203333333333333west, null]
+Hiiii [12.203333333333333west, 12.203333333333333east]
+After Seperation Method: [-12.203333333333333, 12.203333333333333]
+Unable to process: west 12 12 12, east 12 12 12
+
+userInput: west 12 12 12, north 12 12 12
+Hiiii [12.203333333333333west, null]
+Hiiii [12.203333333333333west, 12.203333333333333north]
+After Seperation Method: [12.203333333333333, -12.203333333333333]
+Final: [12.203333, -12.203333]

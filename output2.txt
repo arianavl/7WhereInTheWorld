@@ -29,8 +29,8 @@ After Seperation Method: [12, 12]
 Final: [12.000000, 12.000000]
 
 userInput: 12    12
-After Seperation Method: [12, , , , 12]
-Unable to process: 12    12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
 
 userInput: -12E, -12S
 After Seperation Method: [--12, null]
@@ -110,8 +110,9 @@ After Seperation Method: [12.203333333333333, 12.203333333333333]
 Final: [12.203333, 12.203333]
 
 userInput: 12 12 12 12 12 12
-After Seperation Method: [12, 12, 12, 12, 12, 12]
-Unable to process: 12 12 12 12 12 12
+After Seperation Method: [12, 1212121212]
+20: Lat and Long not valid[12.000000, 1212121212.000000]
+Cannot Convert12 12 12 12 12 12
 
 userInput: 12 12 12, 12 12 12
 After Seperation Method: [121212, 121212]
