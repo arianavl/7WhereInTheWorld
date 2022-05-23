@@ -164,7 +164,7 @@ public class whereInTheWorld {
                     Double sec = Double.parseDouble(degMinSec[i + 2]);
 
                     //Check values are valid
-                    if (min < 60 && sec < 60) {
+                    if (min < 60 && sec < 60 && deg < 90) {
                         lat = (deg + min / 60 + sec / 3600);
                     } else {
                         errorMessage = "Unable to process: ";
