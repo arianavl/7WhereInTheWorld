@@ -7,6 +7,7 @@ import java.util.regex.*;
 
 /**
  * Inputs that still dont work
+ * E 12 S 12
  * 
  * Still haven't done:
  * "Degrees, minutes, seconds" form
@@ -47,31 +48,35 @@ public class whereInTheWorld {
             System.out.println("userInput: " + userInput); //Debugging
             errorMessage = "";
 
+            if (userInput.contains("°") || userInput.contains("\'") || userInput.contains("″")) {
+                String[] degMinSec = seperateDegMinSec(userInput);
+            } else {
+
+            }
+
             //Seperate into an array with Lat and Long in spereate spaces
             String[] latAndLong = seperateIntoArray(userInput);
 
             //Happens Before here
             System.out.println("After Seperation Method: " + Arrays.toString(latAndLong)); //Debugging
 
-            
-
             //Check to see if array seems correct
             if (latAndLong.length != 2) {
-                errorMessage = "Cannot convert";
-                System.out.println(errorMessage);
+                errorMessage = "Unable to process: ";
+                System.out.println(errorMessage + userInput);
 
                 continue;
                 //If coords seem to be correct continue
             }
-            
+
             if (errorMessage != "") {
-                System.out.println(errorMessage);
+                System.out.println(errorMessage + userInput);
                 continue;
             }
 
             // Replace multiple negative sign to one
             for (int i = 0; i < latAndLong.length; i++) {
-                latAndLong[i] = latAndLong[i].replaceAll("-+", "-"); 
+                latAndLong[i] = latAndLong[i].replaceAll("-+", "-");
             }
 
             // Happens before here
@@ -94,7 +99,7 @@ public class whereInTheWorld {
                 }
 
             }
-            
+
             //Test once converted into standard form
             boolean latIsValid = Pattern.matches(STANDARD_LAT, latAndLong[0]);
             boolean longIsValid = Pattern.matches(STANDARD_LONG, latAndLong[1]);
@@ -107,32 +112,39 @@ public class whereInTheWorld {
             } else {
                 errorMessage = "Cannot Convert";
                 System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
-                System.out.println(errorMessage);
+                System.out.println(errorMessage + userInput);
                 continue;
 
             }
-            
-            //Code sees if valid lat and long if values are swapped
-                /*else {
-                // Check to see if coords were the wrong way around
-                latIsValid = Pattern.matches(STANDARD_LONG, latAndLong[0]);
-                longIsValid = Pattern.matches(STANDARD_LAT, latAndLong[1]);
 
-                if (latIsValid && longIsValid) {
-                    latAndLong = swapCoords(latAndLong);
-                    validCoords = Arrays.toString(latAndLong);
-                    System.out.println(validCoords);
-                    writeToFile(content, "map1.geojson");
-                
+            //Code sees if valid lat and long if values are swapped
+            /*else {
+            // Check to see if coords were the wrong way around
+            latIsValid = Pattern.matches(STANDARD_LONG, latAndLong[0]);
+            longIsValid = Pattern.matches(STANDARD_LAT, latAndLong[1]);
+            
+            if (latIsValid && longIsValid) {
+                latAndLong = swapCoords(latAndLong);
+                validCoords = Arrays.toString(latAndLong);
+                System.out.println(validCoords);
+                writeToFile(content, "map1.geojson");
+            
             }*/
 
             //System.out.println("lat: " + latIsValid);//Debugging
             //System.out.println("long: " + longIsValid);//Debugging
-        
+
         }
 
         scan.close();
 
+    }
+    
+    private static String[] seperateDegMinSec(String userInput) {
+        userInput = userInput.replaceAll("[°\'″]", "");
+        userInput = userInput.replaceAll(" ", ",");
+        String[] degMinSec = userInput.split(",");
+        return null;
     }
 
     /**
@@ -178,7 +190,7 @@ public class whereInTheWorld {
             for (int i = 0; i < latAndLong.length; i++) {
                 latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                 if (latAndLong[i] == null) {
-                    errorMessage = "Cannot convert";
+                    errorMessage = "Unable to process: ";
                 }
             }
 
@@ -222,6 +234,9 @@ public class whereInTheWorld {
                     //System.out.println(latAndLongCompassValid.length); //debugging
 
                     if (Character.isLetter(latAndLongCompassValid[i].charAt(0))) {
+                        if (i == 0) { //If compass letters are before digit
+                            coordsIndex = 1;
+                        }
                         char compass = latAndLongCompassValid[i].charAt(0);
                         latAndLong[count2] = latAndLongCompassValid[coordsIndex] + compass;
                         count2++;
@@ -241,7 +256,7 @@ public class whereInTheWorld {
                 for (int i = 0; i < latAndLong.length; i++) {
                     latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                     if (latAndLong[i] == null) {
-                        errorMessage = "Cannot convert";
+                        errorMessage = "Unable to process: ";
                     }
                 }
 
@@ -274,7 +289,7 @@ public class whereInTheWorld {
                 for (int i = 0; i < latAndLong.length; i++) {
                     latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                     if (latAndLong[i] == null) {
-                        errorMessage = "Cannot convert";
+                        errorMessage = "Unable to process:"+ userInput;
                     }
                 }
                 return latAndLong;
@@ -310,10 +325,10 @@ public class whereInTheWorld {
             }
         }
         if (n > 1 || s > 1 || e > 1 || w > 1) {
-            errorMessage = "Cannot Convert";
+            errorMessage = "Unable to process: ";
             return latAndLong;
         } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
-            errorMessage = "Cannot Convert";
+            errorMessage = "Unable to process: ";
             return latAndLong;
         }
         for (int j = 0; j < latAndLong.length; j++) {
