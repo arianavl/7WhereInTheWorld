@@ -7,7 +7,6 @@ import java.util.regex.*;
 
 /**
  * Inputs that still dont work
- * 12, w, 12, S
  * 
  * Still haven't done:
  * Degress and decimal minutes form
@@ -21,6 +20,8 @@ import java.util.regex.*;
  * E 12 S 12
  * 12 12 12 12 12 12
  * 12 12 12 E 12 12 12 S
+ * 12 w, 1 2 - they should only combine number if one is a letter
+ * 12, w, 12, S
  * 
  * Degrees symbol = option shift 8
  * 
@@ -43,13 +44,12 @@ public class whereInTheWorld {
     private static String errorMessage = "";
     private static int numSpaces = 0;
 
-
-
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         while (scan.hasNextLine()) {
             String[] latAndLong;
-            String userInput = scan.nextLine();
+            String userInputOriginal = scan.nextLine();
+            String userInput = userInputOriginal;
             System.out.println();//debugging
 
             System.out.println("userInput: " + userInput); //Debugging
@@ -59,8 +59,12 @@ public class whereInTheWorld {
             userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
             userInput = userInput.replaceAll("-+", "-"); // Replace multiple comma to single comma
 
-            for (int i = 0; i < userInput.length(); i++) {
-                if (userInput.charAt(i) == ' ') {
+            for (int i = 0; i < userInput.length() - 1; i++) {
+
+                if (userInput.charAt(i) == ',' && userInput.charAt(i + 1) == ' ') {
+                    numSpaces++;
+                    i++;
+                } else if (userInput.charAt(i) == ',' || userInput.charAt(i) == ' ') {
                     numSpaces++;
                 }
             }
@@ -76,23 +80,21 @@ public class whereInTheWorld {
                 System.out.println("After Seperation Method: " + Arrays.toString(latAndLong)); //Debugging
             }
 
-
-            
             //Check to see if array seems correct
             if (errorMessage != "") {
-                System.out.println(errorMessage + userInput);
+                System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
-            
+
             //System.out.println("1: " + Arrays.toString(latAndLong)); //Debugging
-            
+
             // Check decimal Places
             for (int i = 0; i < latAndLong.length; i++) {
                 //System.out.println("DECIMALS 8: " + latAndLong[i]); //Debugging
-            
+
                 String[] decimalArray = latAndLong[i].split("[.]");
                 //System.out.println(Arrays.toString(decimalArray)); //Debugging
-            
+
                 if (decimalArray.length == 2) {
                     if (decimalArray[1].length() != 6) {
                         decimalArray[1] = checkDecimalAmount(decimalArray[1]);
@@ -101,13 +103,13 @@ public class whereInTheWorld {
                 } else {
                     latAndLong[i] = decimalArray[0] + "." + "0".repeat(6);
                 }
-            
+
             }
-            
+
             //Test once converted into standard form
             if (latAndLong.length != 2) {
-                errorMessage = "Unable to process: ";
-                System.out.println(errorMessage + userInput);
+                errorMessage = "Unable to process2: ";
+                System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
             boolean latIsValid = Pattern.matches(STANDARD_LAT, latAndLong[0]);
@@ -121,11 +123,11 @@ public class whereInTheWorld {
             } else {
                 errorMessage = "Unable to Process3: ";
                 System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
-                System.out.println(errorMessage + userInput);
+                System.out.println(errorMessage + userInputOriginal);
                 continue;
-            
+
             }
-            
+
             //Code sees if valid lat and long if values are swapped
             /*else {
             // Check to see if coords were the wrong way around
@@ -148,7 +150,7 @@ public class whereInTheWorld {
         scan.close();
 
     }
-    
+
     /**
      * Method to split Degrees, minutes and seconds into array
      * Representing lat and long
@@ -231,28 +233,25 @@ public class whereInTheWorld {
             }
 
             for (int z = 0; z < latAndLong.length; z++) {
-                    latAndLong[z] = replaceNESWCoorinate(latAndLong[z]);
-                }
+                latAndLong[z] = replaceNESWCoorinate(latAndLong[z]);
+            }
 
-                //Check order of lat and long
+            //Check order of lat and long
             latAndLong = checkOrderOfLatAndLong(latAndLong);
 
-                //Convert E, S, W, N's
+            //Convert E, S, W, N's
             for (int z = 0; z < latAndLong.length; z++) {
                 latAndLong[z] = convertNESWCoorinate(latAndLong[z]);
                 if (latAndLong[z] == null) {
                     errorMessage = "Unable to process8: ";
                 }
             }
-        
-            
+
         } else {
             errorMessage = "Unable to process9: ";
             return degMinSec;
 
         }
-
-
 
         return latAndLong;
     }
@@ -267,21 +266,24 @@ public class whereInTheWorld {
     private static String[] seperateIntoArray(String userInput) {
         //If has ',' split using that
         if (userInput.contains(",")) {
+            System.out.println("numspaces: " + numSpaces); //debugging
             //userInput = userInput.replaceAll(",+", ","); // Replace multiple comma to single comma
             if (numSpaces > 3 && hasLetters(userInput) == 0) {
-                errorMessage = "Unable to process: ";
+                errorMessage = "Unable to process10: ";
                 //System.out.println("this is not the right methos"); //debugging
                 return null;
-            } else if (numSpaces != 1 && hasLetters(userInput) == 0) {
-                errorMessage = "Unable to process: ";
+            } else if ((numSpaces != 1 && numSpaces != 0) && hasLetters(userInput) == 0) {
+                errorMessage = "Unable to process11: ";
+                return null;
+            } else if ((numSpaces == 3 && hasLetters(userInput) == 1)) {
+                errorMessage = "Unable to process21: ";
                 return null;
             }
             // If it contains spaces, get rid of them
-            if (userInput.contains(" ")) {
-                userInput = userInput.replaceAll(" ", "");
-            }
+            userInput = userInput.replaceAll(" ", "");
+
             String[] latAndLong = userInput.split(",");//Split into array
-            
+
             //Looks for '-' - don't know why
             /*
             for (int i = 0; i < latAndLong.length; i++) {
@@ -292,21 +294,23 @@ public class whereInTheWorld {
                 }
             }
             */
+            System.out.println("-1: " + Arrays.toString(latAndLong)); //Debugging
 
             //Convert to E, S, W, N's
             for (int i = 0; i < latAndLong.length; i++) {
                 latAndLong[i] = replaceNESWCoorinate(latAndLong[i]);
             }
+            System.out.println("1: " + Arrays.toString(latAndLong)); //Debugging
 
             //Check order of lat and long
             latAndLong = checkOrderOfLatAndLong(latAndLong);
-            //System.out.println("3: " + Arrays.toString(latAndLong)); //Debugging
+            System.out.println("3: " + Arrays.toString(latAndLong)); //Debugging
 
             //Convert E, S, W, N's
             for (int i = 0; i < latAndLong.length; i++) {
                 latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                 if (latAndLong[i] == null) {
-                    errorMessage = "Unable to process: ";
+                    errorMessage = "Unable to process12: ";
                 }
             }
 
@@ -339,30 +343,7 @@ public class whereInTheWorld {
                 }
                 System.out.println("Compass before: " + Arrays.toString(latAndLongCompassValid));//debugging
 
-
-
-                String[] latAndLong = new String[2];
-                int coordsIndex = 0;
-                int count2 = 0;
-                System.out.println("latAndLong Before: " + Arrays.toString(latAndLong));//debugging
-                for (int i = 0; i < latAndLongCompassValid.length; i++) {
-                    //System.out.println(i); //debugging
-                    //System.out.println(latAndLongCompassValid.length); //debugging
-
-                    if (Character.isLetter(latAndLongCompassValid[i].charAt(0))) {
-                        if (i == 0) { //If compass letters are before digit
-                            coordsIndex = 1;
-                        }
-                        char compass = latAndLongCompassValid[i].charAt(0);
-                        latAndLong[count2] = latAndLongCompassValid[coordsIndex] + compass;
-                        count2++;
-                    } else {
-                        coordsIndex = i;
-                    }
-                }
-                if (latAndLong[1] == null) {
-                    latAndLong[1] = latAndLongCompassValid[coordsIndex];
-                }
+                String[] latAndLong = joinCompassToValues(latAndLongCompassValid);
                 System.out.println("7: " + Arrays.toString(latAndLong)); //Debugging
 
                 //Check order of lat and long
@@ -372,16 +353,16 @@ public class whereInTheWorld {
                 for (int i = 0; i < latAndLong.length; i++) {
                     latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                     if (latAndLong[i] == null) {
-                        errorMessage = "Unable to process: ";
+                        errorMessage = "Unable to process13: ";
                     }
                 }
 
                 return latAndLong;
 
-            //If it has spaces and only digits
-        } else {
-                
-            // gets rid of leading spaces
+                //If it has spaces and only digits
+            } else {
+
+                // gets rid of leading spaces
                 int index = 0;
                 for (int i = 0; i < userInput.length(); i++) {
                     if (Character.isLetterOrDigit(userInput.charAt(i))) {
@@ -392,7 +373,6 @@ public class whereInTheWorld {
                 String userInputWithoutLeadingSpaces = userInput.substring(index);
 
                 String[] latAndLong = userInputWithoutLeadingSpaces.split(" ");
-
 
                 //String[] latAndLong = userInputWithoutLeadingSpaces.split(" ", 2);
                 //System.out.println(latAndLong[1]);
@@ -410,7 +390,7 @@ public class whereInTheWorld {
                 for (int i = 0; i < latAndLong.length; i++) {
                     latAndLong[i] = convertNESWCoorinate(latAndLong[i]);
                     if (latAndLong[i] == null) {
-                        errorMessage = "Unable to process: ";
+                        errorMessage = "Unable to process14: ";
                     }
                 }
                 return latAndLong;
@@ -420,7 +400,6 @@ public class whereInTheWorld {
         String[] latAndLong = {};
         return latAndLong;
     }
-    
 
     /**
      * Method to check whether lat and long are in the correct order by looking
@@ -446,24 +425,28 @@ public class whereInTheWorld {
             }
         }
         if (n > 1 || s > 1 || e > 1 || w > 1) {
-            errorMessage = "Unable to process: ";
+            errorMessage = "Unable to process15: ";
             return latAndLong;
         } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
-            errorMessage = "Unable to process: ";
+            errorMessage = "Unable to process16: ";
             return latAndLong;
+        }
+
+        if (latAndLong.length == 4) {
+            latAndLong = joinCompassToValues(latAndLong);
         }
         for (int j = 0; j < latAndLong.length; j++) {
 
             if ((latAndLong[j].contains("N") || latAndLong[j].contains("S")) && j != 0) {
                 validLatLong = swapCoords(latAndLong);
                 //System.out.println("swapped coords");//Debugging
-                //System.out.println(Arrays.toString(validLatLong)); //Debugging
+                System.out.println("24: " + Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
 
             } else if ((latAndLong[j].contains("W") || latAndLong[j].contains("E")) && j != 1) {
                 validLatLong = swapCoords(latAndLong);
                 //System.out.println("swapped coords");//Debugging
-                //System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
+                System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
                 return validLatLong;
 
             } else {
@@ -471,10 +454,9 @@ public class whereInTheWorld {
                 //return validLatLong;
             }
         }
-    
+
         return validLatLong;
     }
-
 
     /**
      * Method to change N, E, S, W into digits
@@ -550,7 +532,6 @@ public class whereInTheWorld {
         return userInput;
     }
 
-
     /**
      * Metjod to change the amount of decimals to 6 places
      * @param decimal the string to be changed
@@ -598,7 +579,6 @@ public class whereInTheWorld {
         }
     }
 
-
     /**
      * Method to check if any of the charaters in String input are letters
      * @param input String
@@ -614,7 +594,6 @@ public class whereInTheWorld {
         return amountOfLetters;
     }
 
-
     /**
      * Method to swap the coordinates around if longatude was put first
      * @param coords the array to be swapped
@@ -626,5 +605,37 @@ public class whereInTheWorld {
         swappedCoords[1] = coords[0];
         return swappedCoords;
     }
+
+/**
+ * Method to join the compass values onto the amount values
+ * @param latAndLongSplit The split array
+ * @return The combined array
+ */
+    public static String[] joinCompassToValues(String [] latAndLongSplit) {
+        String[] latAndLongCompass = new String[2];
+                int coordsIndex = 0;
+                int count2 = 0;
+                System.out.println("latAndLong Before1: " + Arrays.toString(latAndLongCompass));//debugging
+                for (int i = 0; i < latAndLongSplit.length; i++) {
+                    //System.out.println(i); //debugging
+                    //System.out.println(latAndLongCompassValid.length); //debugging
+
+                    if (Character.isLetter(latAndLongSplit[i].charAt(0))) {
+                        if (i == 0) { //If compass letters are before digit
+                            coordsIndex = 1;
+                        }
+                        char compass = latAndLongSplit[i].charAt(0);
+                        latAndLongCompass[count2] = latAndLongSplit[coordsIndex] + compass;
+                        count2++;
+                    } else {
+                        coordsIndex = i;
+                    }
+                }
+                if (latAndLongCompass[1] == null) {
+                    latAndLongCompass[1] = latAndLongSplit[coordsIndex];
+                }
+                return latAndLongCompass;
+    }
 }
+
 

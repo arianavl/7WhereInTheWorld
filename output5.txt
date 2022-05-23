@@ -1,6 +1,9 @@
 
 userInput: 12.000000, 12.000000
 numspaces: 1
+-1: [12.000000, 12.000000]
+1: [12.000000, 12.000000]
+3: [12.000000, 12.000000]
 After Seperation Method: [12.000000, 12.000000]
 Final: [12.000000, 12.000000]
 
@@ -10,11 +13,17 @@ Final: [12.000000, 12.000000]
 
 userInput: -12.000000, -12.000000
 numspaces: 1
+-1: [-12.000000, -12.000000]
+1: [-12.000000, -12.000000]
+3: [-12.000000, -12.000000]
 After Seperation Method: [-12.000000, -12.000000]
 Final: [-12.000000, -12.000000]
 
 userInput: 12.0, 12
 numspaces: 1
+-1: [12.0, 12]
+1: [12.0, 12]
+3: [12.0, 12]
 After Seperation Method: [12.0, 12]
 Final: [12.000000, 12.000000]
 
@@ -24,14 +33,20 @@ Final: [12.000000, 12.000000]
 
 userInput: 180, 12
 numspaces: 1
+-1: [180, 12]
+1: [180, 12]
+3: [180, 12]
 After Seperation Method: [180, 12]
 20: Lat and Long not valid[180.000000, 12.000000]
 Unable to Process3: 180, 12
 
 userInput: 12,,12
-numspaces: 0
-After Seperation Method: null
-Unable to process: 12,,12
+numspaces: 1
+-1: [12, 12]
+1: [12, 12]
+3: [12, 12]
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
 
 userInput: 12    12
 After Seperation Method: [12, 12]
@@ -43,11 +58,18 @@ Final: [12.000000, 12.000000]
 
 userInput: -12E, -12S
 numspaces: 1
+-1: [-12E, -12S]
+1: [-12E, -12S]
+4: [-12S, -12E]
+3: [-12S, -12E]
 After Seperation Method: [--12, null]
-Unable to process: -12E, -12S
+Unable to process12: -12E, -12S
 
 userInput: 12south, 12east
 numspaces: 1
+-1: [12south, 12east]
+1: [12S, 12E]
+3: [12S, 12E]
 After Seperation Method: [-12, 12]
 Final: [-12.000000, 12.000000]
 
@@ -61,16 +83,25 @@ Final: [12.000000, -12.000000]
 
 userInput: 12 n, 12 s
 numspaces: 3
+-1: [12n, 12s]
+1: [12N, 12S]
+3: [12N, 12S]
 After Seperation Method: [12, -12]
-Unable to process: 12 n, 12 s
+Unable to process16: 12 n, 12 s
 
 userInput: 12.123123412, 12.123
 numspaces: 1
+-1: [12.123123412, 12.123]
+1: [12.123123412, 12.123]
+3: [12.123123412, 12.123]
 After Seperation Method: [12.123123412, 12.123]
 Final: [12.123123, 12.123000]
 
 userInput: 12,,, 12
 numspaces: 1
+-1: [12, 12]
+1: [12, 12]
+3: [12, 12]
 After Seperation Method: [12, 12]
 Final: [12.000000, 12.000000]
 
@@ -79,6 +110,7 @@ userInput: 12 E 12
 Compass before: [12, E, 12]
 latAndLong Before: [null, null]
 7: [12E, 12]
+4: [12, 12E]
 After Seperation Method: [12, 12]
 Final: [12.000000, 12.000000]
 
@@ -87,6 +119,7 @@ userInput: 12 12 west
 Compass before: [12, 12, W]
 latAndLong Before: [null, null]
 7: [12W, 12]
+4: [12, 12W]
 After Seperation Method: [12, -12]
 Final: [12.000000, -12.000000]
 
@@ -104,7 +137,7 @@ Compass before: [12, W, 12, W]
 latAndLong Before: [null, null]
 7: [12W, 12W]
 After Seperation Method: [-12, -12]
-Unable to process: 12 w 12 W
+Unable to process15: 12 w 12 W
 
 userInput: 12 w 12 E
 5: [12, W, 12, E]
@@ -112,13 +145,65 @@ Compass before: [12, W, 12, E]
 latAndLong Before: [null, null]
 7: [12W, 12E]
 After Seperation Method: [-12, 12]
-Unable to process: 12 w 12 E
+Unable to process16: 12 w 12 E
+
+userInput: 12 w, 12 s
+numspaces: 3
+-1: [12w, 12s]
+1: [12W, 12S]
+4: [12S, 12W]
+3: [12S, 12W]
+After Seperation Method: [-12, -12]
+Final: [-12.000000, -12.000000]
+
+userInput: 12 w, 12 n
+numspaces: 3
+-1: [12w, 12n]
+1: [12W, 12N]
+4: [12N, 12W]
+3: [12N, 12W]
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 w, 12
+numspaces: 2
+-1: [12w, 12]
+1: [12W, 12]
+4: [12, 12W]
+3: [12, 12W]
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12, W 12
+numspaces: 2
+-1: [12, W12]
+1: [12, W12]
+3: [12, W12]
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 w, 1 2
+numspaces: 3
+After Seperation Method: null
+Unable to process21: 12 w, 1 2
 
 userInput: 12, w, 12, S
 numspaces: 3
-After Seperation Method: [-, 12]
-20: Lat and Long not valid[-.000000, 12.000000]
-Unable to Process3: 12, w, 12, S
+-1: [12, w, 12, S]
+1: [12, W, 12, S]
+latAndLong Before1: [null, null]
+4: [12S, 12W]
+3: [12S, 12W]
+After Seperation Method: [-12, -12]
+Final: [-12.000000, -12.000000]
+
+userInput: 12, w, 12
+numspaces: 2
+-1: [12, w, 12]
+1: [12, W, 12]
+3: [12, W, 12]
+After Seperation Method: [12, -, 12]
+Unable to process2: 12, w, 12
 
 userInput: 12 12' 12" 12 12' 12"
 After SeperationDegMinSec Method: [12.203333333333333, 12.203333333333333]
@@ -158,9 +243,10 @@ Final: [-12.203333, 12.203333]
 
 userInput: west 12 12 12, east 12 12 12
 After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
-Unable to process: west 12 12 12, east 12 12 12
+Unable to process16: west 12 12 12, east 12 12 12
 
 userInput: west 12 12 12, north 12 12 12
+4: [12.203333333333333N, 12.203333333333333W]
 After SeperationDegMinSec Method: [12.203333333333333, -12.203333333333333]
 Final: [12.203333, -12.203333]
 
@@ -171,13 +257,13 @@ Unable to process4: 89 68 24, 12 12 12
 userInput: 1 1, 1 1
 numspaces: 3
 After Seperation Method: null
-Unable to process: 1 1, 1 1
+Unable to process11: 1 1, 1 1
 
 userInput: 1 1 1
 After Seperation Method: [1, 1, 1]
-Unable to process: 1 1 1
+Unable to process2: 1 1 1
 
 userInput: 1 1, 1
 numspaces: 2
 After Seperation Method: null
-Unable to process: 1 1, 1
+Unable to process11: 1 1, 1
