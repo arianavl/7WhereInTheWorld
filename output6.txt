@@ -267,3 +267,47 @@ userInput: 1 1, 1
 numspaces: 2
 After Seperation Method: null
 Unable to process11: 1 1, 1
+
+userInput: aefasdf
+After Seperation Method: []
+Unable to process2: aefasdf
+
+userInput: asdfasdf
+After Seperation Method: []
+Unable to process2: asdfasdf
+
+userInput: asdfasdf
+After Seperation Method: []
+Unable to process2: asdfasdf
+
+userInput: 12 12", 12 12"
+After SeperationDegMinSec Method: [12, 12, 12, 12]
+Unable to process9: 12 12", 12 12"
+
+userInput: E 12 12" S 12 12"
+After SeperationDegMinSec Method: [E, 12, 12, S, 12, 12]
+Unable to process5: E 12 12" S 12 12"
+
+userInput: E 12 12", S 12 12"
+After SeperationDegMinSec Method: [E, 12, 12, S, 12, 12]
+Unable to process5: E 12 12", S 12 12"
+
+userInput: E 12 12" W 12 12"
+After SeperationDegMinSec Method: [E, 12, 12, W, 12, 12]
+Unable to process5: E 12 12" W 12 12"
+
+userInput: 12 12" S 12 12" east
+After SeperationDegMinSec Method: [12, 12, S, 12, 12, east]
+Unable to process5: 12 12" S 12 12" east
+
+userInput: 12 12" S, 12 12" east
+After SeperationDegMinSec Method: [12, 12, S, 12, 12, east]
+Unable to process5: 12 12" S, 12 12" east
+
+userInput: 1 2 12" 12 12"
+After SeperationDegMinSec Method: [1, 2, 12, 12, 12]
+Unable to process9: 1 2 12" 12 12"
+
+userInput: 1 2 12" E 12 12"
+After SeperationDegMinSec Method: [1, 2, 12, E, 12, 12]
+Unable to process5: 1 2 12" E 12 12"
