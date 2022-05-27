@@ -1,0 +1,267 @@
+
+userInput: 12.000000, 12.000000
+After Seperation Method: [12.000000, 12.000000]
+Final: [12.000000, 12.000000]
+
+userInput: 12.000000 12.000000
+After Seperation Method: [12.000000, 12.000000]
+Final: [12.000000, 12.000000]
+
+userInput: -12.000000, -12.000000
+After Seperation Method: [-12.000000, -12.000000]
+Final: [-12.000000, -12.000000]
+
+userInput: 23.6 W, -50.00
+After Seperation Method: [-50.00, -23.6]
+Final: [-50.000000, -23.600000]
+
+userInput: 45.9 S, 170.5 E Dunedin
+After SeperationDegMinSec Method: [45.9, S, 170.5, E, DuNEdiN]
+Unable to process9 2: 45.9 S, 170.5 E Dunedin
+
+userInput: 12.0, 12
+After Seperation Method: [12.0, 12]
+Final: [12.000000, 12.000000]
+
+userInput: 12 12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput: 180, 12
+After Seperation Method: [180, 12]
+20: Lat and Long not valid[180.000000, 12.000000]
+Unable to Process3: 180, 12
+
+userInput: 12,,12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput: 12    12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput:     12   12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput: -12E, -12S
+After Seperation Method: [--12, null]
+Unable to process12: -12E, -12S
+
+userInput: 12south, 12east
+After Seperation Method: [-12, 12]
+Final: [-12.000000, 12.000000]
+
+userInput: 12 north 12 west
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 n, 12 s
+After Seperation Method: [12, -12]
+Unable to process16: 12 n, 12 s
+
+userInput: 12.123123412, 12.123
+After Seperation Method: [12.123123412, 12.123]
+Final: [12.123123, 12.123000]
+
+userInput: 12,,, 12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput: 12 E 12
+After Seperation Method: [12, 12]
+Final: [12.000000, 12.000000]
+
+userInput: 12 12 west
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 12 south
+After Seperation Method: [-12, 12]
+Final: [-12.000000, 12.000000]
+
+userInput: 12 w 12 W
+After Seperation Method: [-12, -12]
+Unable to process15: 12 w 12 W
+
+userInput: 12 w 12 E
+After Seperation Method: [-12, 12]
+Unable to process16: 12 w 12 E
+
+userInput: 12 w, 12 s
+After Seperation Method: [-12, -12]
+Final: [-12.000000, -12.000000]
+
+userInput: 12 w, 12 n
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 w, 12
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12, W 12
+After Seperation Method: [12, -12]
+Final: [12.000000, -12.000000]
+
+userInput: 12 w, 1 2
+After Seperation Method: null
+Unable to process21: 12 w, 1 2
+
+userInput: 12, w, 12, S
+After Seperation Method: [-12, -12]
+Final: [-12.000000, -12.000000]
+
+userInput: 12, w, 12
+After Seperation Method: [12, -, 12]
+Unable to process2: 12, w, 12
+
+userInput: 12 12' 12" 12 12' 12"
+After SeperationDegMinSec Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
+
+userInput: 12 12' 12", 12 12' 12"
+After SeperationDegMinSec Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
+
+userInput: 12 12 12 12 12 12
+After SeperationDegMinSec Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
+
+userInput: 12 12 12, 12 12 12
+After SeperationDegMinSec Method: [12.203333333333333, 12.203333333333333]
+Final: [12.203333, 12.203333]
+
+userInput: 12 12' 12" S, 12 12' 12" E
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: 12 12 12 S 12 12 12 E
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: 12 12 12 S, 12 12 12 E
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: S 12 12 12, E 12 12 12
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: south 12 12 12, east 12 12 12
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Final: [-12.203333, 12.203333]
+
+userInput: west 12 12 12, east 12 12 12
+After SeperationDegMinSec Method: [-12.203333333333333, 12.203333333333333]
+Unable to process16: west 12 12 12, east 12 12 12
+
+userInput: west 12 12 12, north 12 12 12
+After SeperationDegMinSec Method: [12.203333333333333, -12.203333333333333]
+Final: [12.203333, -12.203333]
+
+userInput: 89 68 24, 12 12 12
+After SeperationDegMinSec Method: [89, 68, 24, 12, 12, 12]
+Unable to process4: 89 68 24, 12 12 12
+
+userInput: 1 1, 1 1
+After SeperationDegMin Method: [1.0166666666666666, 1.0166666666666666]
+Final: [1.016666, 1.016666]
+
+userInput: 1 1 1
+After Seperation Method: [1, 1, 1]
+Unable to process2: 1 1 1
+
+userInput: 1 1, 1
+After Seperation Method: null
+Unable to process11: 1 1, 1
+
+userInput: aefasdf
+After Seperation Method: []
+Unable to process-1: aefasdf
+
+userInput: asdfasdf
+After Seperation Method: []
+Unable to process-1: asdfasdf
+
+userInput: asdfasdf
+After Seperation Method: []
+Unable to process-1: asdfasdf
+
+userInput: 12 12', 12 12'
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: E 12 12' S 12 12'
+Inside compass case for deg, mins
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: E 12 12', S 12 12'
+Inside compass case for deg, mins
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: E 12 12' W 12 12'
+Inside compass case for deg, mins
+After SeperationDegMin Method: [12.2, -12.2]
+Unable to process16: E 12 12' W 12 12'
+
+userInput: 12 12' S 12 12' east
+Inside compass case for deg, mins
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: 12 12' S, 12 12' east
+Inside compass case for deg, mins
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: 1 2 12' 12 12'
+After SeperationDegMinSec Method: [1, 2, 12, 12, 12]
+Unable to process9 2: 1 2 12' 12 12'
+
+userInput: 1 2 12' E 12 12'
+Inside compass case for deg, mins
+After SeperationDegMin Method: [1, 2, 12, E, 12, 12]
+Unable to process17: 1 2 12' E 12 12'
+
+userInput: 
+After Seperation Method: []
+Unable to process-1: 
+
+userInput: -1 2' s, 1 2
+After SeperationDegMinSec Method: [-1, 2, S, 1, 2]
+Unable to process9 2: -1 2' s, 1 2
+
+userInput: -1 2 s, 1 2
+After SeperationDegMinSec Method: [-1, 2, S, 1, 2]
+Unable to process9 2: -1 2 s, 1 2
+
+userInput: -1 2', 1 2
+After SeperationDegMin Method: [-0.9666666666666667, 1.0333333333333334]
+Final: [-0.966666, 1.033333]
+
+userInput: -1 2 n, 1 2
+After SeperationDegMinSec Method: [-1, 2, N, 1, 2]
+Unable to process9 2: -1 2 n, 1 2
+
+userInput: 
+After Seperation Method: []
+Unable to process-1: 
+
+userInput: 12 12'S, 12 12
+After SeperationDegMin Method: [12, 12S, 12, 12]
+Unable to process9 1: 12 12'S, 12 12
+
+userInput: 12 12' S, 12 12
+After SeperationDegMinSec Method: [12, 12, S, 12, 12]
+Unable to process9 2: 12 12' S, 12 12
+
+userInput: 
+After Seperation Method: []
+Unable to process-1: 
+
+userInput: 12 12, 12 12
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]

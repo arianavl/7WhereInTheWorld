@@ -1,0 +1,50 @@
+
+userInput: 12 12, 12 12
+NumSpaces: 3
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: 12 12", 12 12"
+NumSpaces: 3
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: 12 12" 12 12"
+NumSpaces: 3
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: 12 12",,,12 12"
+NumSpaces: 3
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: 12 12 E, 12 12 s
+NumSpaces: 5
+Inside compass case for deg, mins
+Degree: 12.0
+Min: 12.0
+Degree: 12.0
+Min: 12.0
+4: [12.2S, 12.2E]
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: E 12 12, S 12 12
+NumSpaces: 5
+Inside compass case for deg, mins
+Degree: 12.0
+Min: 12.0
+Degree: 12.0
+Min: 12.0
+4: [12.2S, 12.2E]
+After SeperationDegMin Method: [-12.2, 12.2]
+Final: [-12.200000, 12.200000]
+
+userInput: 12 12 E E, 12 12"
+NumSpaces: 5
+Inside compass case for deg, mins
+Degree: 12.0
+Min: 12.0
+After SeperationDegMin Method: [12, 12, E, E, 12, 12]
+Unable to process17: 12 12 E E, 12 12"
