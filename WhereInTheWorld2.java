@@ -43,6 +43,13 @@ public class WhereInTheWorld2 {
             }
             System.out.println("1: " + userInput); //debugging
 
+            // Error checking
+            if (userInput.length() == 0) {
+                System.out.println("Unable to process: " + userInputOriginal);
+
+                continue;
+            }
+
             userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
             userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
 
@@ -51,8 +58,11 @@ public class WhereInTheWorld2 {
             }
             // Split into an array
             String[] userInputArray = userInput.split(" ");
+            if (userInputArray.length < 2) {
+                System.out.println("Unable to process: " + userInputOriginal);
 
-            
+                continue;
+            }
 
             System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
 
@@ -64,6 +74,11 @@ public class WhereInTheWorld2 {
 
             //Convert different systems into lat and long
             latAndLong = convert(userInputArray);
+
+            // Get rid of multiple '-'
+            for (int i = 0; i < latAndLong.length; i++) {
+                latAndLong[i] = latAndLong[i].replaceAll("-+", "-"); // Replace multiple comma to single comma
+            }
 
             System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
 
@@ -124,7 +139,6 @@ public class WhereInTheWorld2 {
         scan.close();
     }
 
-
     /**
      * Method that convert values into valid lat and long if possible
      * @param userInput the array to be converted
@@ -146,6 +160,7 @@ public class WhereInTheWorld2 {
                 return null;
             }
         } else if (letters > 0) {
+            //userInput = checkOrderOfCompass(userInput);
             if (nums == 2) {
                 return compasslatLongConvert(userInput);
             } else if (nums == 4) {
@@ -157,12 +172,11 @@ public class WhereInTheWorld2 {
                 return null;
             }
         }
-        
+
         errorMessage = "Unable to Process7: ";
         return null;
-        
+
     }
-    
 
     /**
      * Method to convert lat and long with compass lable into lat and long
@@ -172,6 +186,14 @@ public class WhereInTheWorld2 {
     public static String[] compasslatLongConvert(String[] userInput) {
         String[] latAndLong = new String[2];
 
+        /*
+        
+        if (ch == 'S' && j > 1) {
+        String[] temp = new String[4];
+        temp [0]
+        }
+        
+        */
         if (letters == 2) {
             int z = 0;
             for (int i = 0; i < userInput.length; i++) {
@@ -181,9 +203,8 @@ public class WhereInTheWorld2 {
                 }
             }
             return latAndLong;
-           
-        }
 
+        }
 
         char ch = 0;
         int j = 1;
@@ -193,11 +214,12 @@ public class WhereInTheWorld2 {
                 j = i;
             }
         }
+
         int y = 0;
         if (ch == 'S') {
-            for (int i = 0; i < 3; i ++) {
+            for (int i = 0; i < 3; i++) {
                 if (i != j) {
-                    if (y == 0){
+                    if (y == 0) {
                         latAndLong[y] = "-" + userInput[i];
 
                     } else {
@@ -205,49 +227,48 @@ public class WhereInTheWorld2 {
                     }
                     y++;
 
-                } 
+                }
             }
         }
 
         y = 0;
         if (ch == 'W') {
-            for (int i = 0; i < 3; i ++) {
+            for (int i = 0; i < 3; i++) {
                 if (i != j) {
-                    if (y == 1){
+                    if (y == 1) {
                         latAndLong[y] = "-" + userInput[i];
                     } else {
                         latAndLong[y] = userInput[i];
                     }
                     y++;
-                } 
+                }
             }
         }
         return latAndLong;
     }
-    
-
-
 
     /**
-     * Method to convert DegMin with compass lable into lat and long
-     * @param userInput array to be converted
-     * @return the converted array
-     */
+    * Method to convert DegMin with compass lable into lat and long
+    * @param userInput array to be converted
+    * @return the converted array
+    */
     public static String[] compassDegMinConvert(String[] userInput) {
-        String[] latAndLong = new String[2];
+        String[] latAndLongBefore = new String[4];
 
         //If both need to be negative
         if (letters == 2) {
             int z = 0;
             for (int i = 0; i < userInput.length; i++) {
                 if (!Character.isLetter(userInput[i].charAt(0))) {
-                    latAndLong[z] = "-" + userInput[i];
-                    z++;
-                    i += 3;
+                    latAndLongBefore[z] = "-" + userInput[i];
+                    latAndLongBefore[z + 1] = userInput[i + 1];
+                    z += 2;
+                    i += 2;
                 }
             }
-            return latAndLong;
-           
+            System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
+
+            return decAndMinsConvert(latAndLongBefore);
         }
 
         // If only one is negative
@@ -256,51 +277,134 @@ public class WhereInTheWorld2 {
         for (int i = 0; i < userInput.length; i++) {
             if (Character.isLetter(userInput[i].charAt(0))) {
                 ch = userInput[i].charAt(0);
-                j = i;
+                j = i; // char index
             }
         }
-        int y = 0;
-        if (ch == 'S') {
-            for (int i = 0; i < 3; i ++) {
-                if (i != j) {
-                    if (y == 0){
-                        latAndLong[y] = "-" + userInput[i];
 
-                    } else {
-                        latAndLong[y] = userInput[i];
+        try {
+            int y = 0;
+            if (ch == 'S') {
+                for (int i = 0; i < total; i++) { //For every value in userArray
+                    if (i != j) { //If index is not where char is
+                        if (y == 0) { // If its the first index hence the S or N coordinate
+                            latAndLongBefore[y] = "-" + userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                        } else {
+                            latAndLongBefore[y] = userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                        }
+                        y += 2;
+                        i++;
                     }
-                    y++;
-
-                } 
+                }
             }
-        }
 
-        y = 0;
-        if (ch == 'W') {
-            for (int i = 0; i < 3; i ++) {
-                if (i != j) {
-                    if (y == 1){
-                        latAndLong[y] = "-" + userInput[i];
-                    } else {
-                        latAndLong[y] = userInput[i];
+            y = 0;
+            if (ch == 'W') {
+                for (int i = 0; i < total; i++) { //For every value in userArray
+                    if (i != j) { //If index is not where char is
+                        if (y == 0) { // If its the first index hence the S or N coordinate
+                            latAndLongBefore[y] = userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                        } else {
+                            latAndLongBefore[y] = "-" + userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                        }
+                        y += 2;
+                        i++;
                     }
-                    y++;
-                } 
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            errorMessage = "Unable to process14: ";
+            return null;
+        }
+
+        System.out.println("10: " + Arrays.toString(latAndLongBefore)); //debugging
+        return decAndMinsConvert(latAndLongBefore);
+    }
+
+    /**
+    * Method to convert DegMinSec with compass lable into lat and long
+    * @param userInput array to be converted
+    * @return the converted array
+    */
+    public static String[] compassDegMinSecConvert(String[] userInput) {
+        String[] latAndLongBefore = new String[6];
+
+        //If both need to be negative
+        if (letters == 2) {
+            int z = 0;
+            for (int i = 0; i < userInput.length; i++) {
+                if (!Character.isLetter(userInput[i].charAt(0))) {
+                    latAndLongBefore[z] = "-" + userInput[i];
+                    latAndLongBefore[z + 1] = userInput[i + 1];
+                    latAndLongBefore[z + 2] = userInput[i + 2];
+                    z += 3;
+                    i += 3;
+                }
+            }
+            System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
+
+            return decMinAndSecConvert(latAndLongBefore);
+        }
+
+        // If only one is negative
+        char ch = 0;
+        int j = 1;
+        for (int i = 0; i < userInput.length; i++) {
+            if (Character.isLetter(userInput[i].charAt(0))) {
+                ch = userInput[i].charAt(0);
+                j = i; // char index
             }
         }
-        return latAndLong;
-    }
-    
 
-     /**
-     * Method to convert DegMinSec with compass lable into lat and long
-     * @param userInput array to be converted
-     * @return the converted array
-     */
-    public static String [] compassDegMinSecConvert(String [] userInput) {
-        return null;
+        try {
+            int y = 0;
+            if (ch == 'S') {
+                for (int i = 0; i < total; i++) { //For every value in userArray
+                    if (i != j) { //If index is not where char is
+                        if (y == 0) { // If its the first index hence the S or N coordinate
+                            latAndLongBefore[y] = "-" + userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                            latAndLongBefore[y + 2] = userInput[i + 2];
+                        } else {
+                            latAndLongBefore[y] = userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                            latAndLongBefore[y + 2] = userInput[i + 2];
+                        }
+                        y += 3;
+                        i += 2;
+                    }
+                }
+            }
+
+            y = 0;
+            if (ch == 'W') {
+                for (int i = 0; i < total; i++) { //For every value in userArray
+                    if (i != j) { //If index is not where char is
+                        if (y == 0) { // If its the first index hence the S or N coordinate
+                            latAndLongBefore[y] = userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                            latAndLongBefore[y + 2] = userInput[i + 2];
+                        } else {
+                            latAndLongBefore[y] = "-" + userInput[i];
+                            latAndLongBefore[y + 1] = userInput[i + 1];
+                            latAndLongBefore[y + 2] = userInput[i + 2];
+                        }
+                        y += 3;
+                        i += 2;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            errorMessage = "Unable to process20: ";
+            return null;
+        }
+
+        System.out.println("19: " + Arrays.toString(latAndLongBefore)); //debugging
+        return decMinAndSecConvert(latAndLongBefore);
     }
-    
 
     /**
      * Method to convert decimal and minutes into lat and long
@@ -343,15 +447,14 @@ public class WhereInTheWorld2 {
         return latAndLong;
     }
 
-
     /**
      * Converts decimals minutes and seconds into lat and Long
      * @param userInput the values to be converted
      * @return the converted values
      */
-    public static String [] decMinAndSecConvert(String [] userInput) {
+    public static String[] decMinAndSecConvert(String[] userInput) {
         double lat = 0.0;
-        String [] latAndLong = new String[2];
+        String[] latAndLong = new String[2];
         int j = 0;
         for (int i = 0; i < userInput.length; i += 3) {
             try {
@@ -386,12 +489,28 @@ public class WhereInTheWorld2 {
         return latAndLong;
     }
 
-
+    /*
+    public static String[] checkOrderOfCompass(String[] userInput) {
+        int mid = userInput.length / 2;
+        String[][] swapArray = new String[2][mid];
+        int z = 0;
+        for (int i = 0; i < swapArray.length; i++) {
+            for (int j = 0; j < mid; j++) {
+                swapArray[i][j] = userInput[z];
+                z++;
+            }
+        }
+    
+        System.out.println("21: " + Arrays.toString(swapArray[0]) + "\t" + Arrays.toString(swapArray[1]));
+        return null;
+    }
+    */
+    
     /**
      * Method that counts the amount of letters and numbers in array
      * @param userInputArray The array to be counted
      */
-    public static void countLettersAndNums(String [] userInputArray) {
+    public static void countLettersAndNums(String[] userInputArray) {
         for (String string : userInputArray) {
             if (Character.isLetter(string.charAt(0))) {
                 letters++;
@@ -401,7 +520,6 @@ public class WhereInTheWorld2 {
         }
         return;
     }
-        
 
     /**
      * Method for replace the coordinate from different forms to one form.
@@ -415,26 +533,26 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("north", "N");
         }
         if (userInput.contains("south")) {
-            userInput = userInput.replaceAll("south", " S ");
+            userInput = userInput.replaceAll("south", "S");
         }
         if (userInput.contains("east")) {
             userInput = userInput.replaceAll("east", "E");
         }
         if (userInput.contains("west")) {
-            userInput = userInput.replaceAll("west", " W ");
+            userInput = userInput.replaceAll("west", "W");
         }
 
         if (userInput.contains("North")) {
             userInput = userInput.replaceAll("North", "N");
         }
         if (userInput.contains("South")) {
-            userInput = userInput.replaceAll("South", " S ");
+            userInput = userInput.replaceAll("South", "S");
         }
         if (userInput.contains("East")) {
             userInput = userInput.replaceAll("East", "E");
         }
         if (userInput.contains("West")) {
-            userInput = userInput.replaceAll("West", " W ");
+            userInput = userInput.replaceAll("West", "W");
         }
 
         String[] temp = userInput.split(" ");
@@ -449,16 +567,36 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("n", "N");
         }
         if (userInput.contains("s")) {
-            userInput = userInput.replaceAll("s", " S ");
+            userInput = userInput.replaceAll("s", "S");
         }
         if (userInput.contains("e")) {
             userInput = userInput.replaceAll("e", "E");
         }
         if (userInput.contains("w")) {
-            userInput = userInput.replaceAll("w", " W ");
+            userInput = userInput.replaceAll("w", "W");
         }
 
-        
+        //Trying to check oreder of compass and swap if need be
+        String[] userInputTemp = userInput.split(" ");
+        int len = userInputTemp.length / 2;
+        String[] splitInHalf = new String[2];
+        int i = 0;
+        for (int y = 0; y < 2; y++) {
+            i = 0;
+            try {
+                while (i < len) {
+                    splitInHalf[y] += userInputTemp[i] + " ";
+                    i++;
+                }
+            } catch (NullPointerException ex) {
+                //TODO: handle exception
+            }
+            y++;
+        }
+
+        System.out.println("Split in half: " + Arrays.toString(splitInHalf)); // debugging
+
+
 
         if (userInput.contains("N")) {
             n++;
@@ -484,11 +622,9 @@ public class WhereInTheWorld2 {
             errorMessage = "Unable to process13: ";
             return userInput;
         }
-        
 
         return userInput;
     }
-    
 
     /**
     * Metjod to change the amount of decimals to 6 places
@@ -536,5 +672,5 @@ public class WhereInTheWorld2 {
         } catch (Exception e) {
         }
     }
-    
+
 }
