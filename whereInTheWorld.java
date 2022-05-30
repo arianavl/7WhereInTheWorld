@@ -769,31 +769,26 @@ public class whereInTheWorld {
      * @return the line after replaced.
      */
     private static String convertNESWCoorinate(String userInput) {
-        //userInput = replaceNESWCoorinate(userInput);
         if (userInput.contains("N")) {
             if (userInput.contains("-")) {
                 return null;
             }
             userInput = userInput.replaceAll("N", "");
-            //System.out.println("N: " + userInput);//debugging
         }
         if (userInput.contains("S")) {
             userInput = userInput.replaceAll("S", "");
             userInput = "-" + userInput;
-            //System.out.println("S: " + userInput);//debugging
         }
         if (userInput.contains("E")) {
             if (userInput.contains("-")) {
                 return null;
             }
             userInput = userInput.replaceAll("E", "");
-            //System.out.println("E: " + userInput);//debugging
         }
         if (userInput.contains("W")) {
             userInput = userInput.replaceAll("W", "");
             userInput = "-" + userInput;
 
-            //System.out.println("W: " + userInput);//debugging
         }
 
         return userInput;

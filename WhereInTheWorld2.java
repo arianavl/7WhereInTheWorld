@@ -28,19 +28,33 @@ public class WhereInTheWorld2 {
             String userInputOriginal = scan.nextLine();
             System.out.println("\n" + userInputOriginal); //debugging
             String userInput = userInputOriginal;
+            errorMessage = "";
+            nums = 0;
+            letters = 0;
+            total = 0;
 
             //Get rid of all extra labels and convert compass lables into N, S, E, W
             // Seperated with spaces
             userInput = replaceNESWCoorinate(userInput);
-            System.out.println(userInput); //debugging
+            //Check to see if array seems correct
+            if (errorMessage != "") {
+                System.out.println(errorMessage + userInputOriginal);
+                continue;
+            }
+            System.out.println("1: " + userInput); //debugging
 
             userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
             userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
 
+            if (userInput.charAt(0) == ' ') {
+                userInput = userInput.substring(1);
+            }
             // Split into an array
             String[] userInputArray = userInput.split(" ");
 
-            System.out.println(Arrays.toString(userInputArray)); //debugging
+            
+
+            System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
 
             //Total
             total = userInputArray.length;
@@ -51,18 +65,17 @@ public class WhereInTheWorld2 {
             //Convert different systems into lat and long
             latAndLong = convert(userInputArray);
 
-            System.out.println(Arrays.toString(latAndLong)); //debugging
-
+            System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
 
             //Check to see if array seems correct
             if (errorMessage != "") {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             } else if (latAndLong.length == 0) {
-                System.out.println("Unable to process-1: " + userInputOriginal);
+                System.out.println("Unable to process1: " + userInputOriginal);
                 continue;
             } else if (latAndLong[0] == null) {
-                System.out.println("Unable to process-1: " + userInputOriginal);
+                System.out.println("Unable to process2: " + userInputOriginal);
                 continue;
             }
             //System.out.println("1: " + Arrays.toString(latAndLong)); //Debugging
@@ -87,7 +100,7 @@ public class WhereInTheWorld2 {
 
             //Test once converted into standard form
             if (latAndLong.length != 2) {
-                errorMessage = "Unable to process2: ";
+                errorMessage = "Unable to process3: ";
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
@@ -100,7 +113,7 @@ public class WhereInTheWorld2 {
                 System.out.println("Final: " + validCoords);
                 writeToFile(content, "map1.geojson");
             } else {
-                errorMessage = "Unable to Process3: ";
+                errorMessage = "Unable to Process4: ";
                 System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
@@ -108,6 +121,7 @@ public class WhereInTheWorld2 {
             }
 
         }
+        scan.close();
     }
 
 
@@ -128,13 +142,162 @@ public class WhereInTheWorld2 {
             } else if (total == 6) { // In decimals, minutes, and seconds
                 return decMinAndSecConvert(userInput);
             } else { // worng amount of values
-                errorMessage = "Unable to process: ";
+                errorMessage = "Unable to process5: ";
                 return null;
             }
         } else if (letters > 0) {
-            
+            if (nums == 2) {
+                return compasslatLongConvert(userInput);
+            } else if (nums == 4) {
+                return compassDegMinConvert(userInput);
+            } else if (nums == 6) {
+                return compassDegMinSecConvert(userInput);
+            } else { // worng amount of values
+                errorMessage = "Unable to process6: ";
+                return null;
+            }
+        }
+        
+        errorMessage = "Unable to Process7: ";
+        return null;
+        
+    }
+    
+
+    /**
+     * Method to convert lat and long with compass lable into lat and long
+     * @param userInput Array to be converted
+     * @return converted array lat and Long
+     */
+    public static String[] compasslatLongConvert(String[] userInput) {
+        String[] latAndLong = new String[2];
+
+        if (letters == 2) {
+            int z = 0;
+            for (int i = 0; i < userInput.length; i++) {
+                if (!Character.isLetter(userInput[i].charAt(0))) {
+                    latAndLong[z] = "-" + userInput[i];
+                    z++;
+                }
+            }
+            return latAndLong;
+           
         }
 
+
+        char ch = 0;
+        int j = 1;
+        for (int i = 0; i < userInput.length; i++) {
+            if (Character.isLetter(userInput[i].charAt(0))) {
+                ch = userInput[i].charAt(0);
+                j = i;
+            }
+        }
+        int y = 0;
+        if (ch == 'S') {
+            for (int i = 0; i < 3; i ++) {
+                if (i != j) {
+                    if (y == 0){
+                        latAndLong[y] = "-" + userInput[i];
+
+                    } else {
+                        latAndLong[y] = userInput[i];
+                    }
+                    y++;
+
+                } 
+            }
+        }
+
+        y = 0;
+        if (ch == 'W') {
+            for (int i = 0; i < 3; i ++) {
+                if (i != j) {
+                    if (y == 1){
+                        latAndLong[y] = "-" + userInput[i];
+                    } else {
+                        latAndLong[y] = userInput[i];
+                    }
+                    y++;
+                } 
+            }
+        }
+        return latAndLong;
+    }
+    
+
+
+
+    /**
+     * Method to convert DegMin with compass lable into lat and long
+     * @param userInput array to be converted
+     * @return the converted array
+     */
+    public static String[] compassDegMinConvert(String[] userInput) {
+        String[] latAndLong = new String[2];
+
+        //If both need to be negative
+        if (letters == 2) {
+            int z = 0;
+            for (int i = 0; i < userInput.length; i++) {
+                if (!Character.isLetter(userInput[i].charAt(0))) {
+                    latAndLong[z] = "-" + userInput[i];
+                    z++;
+                    i += 3;
+                }
+            }
+            return latAndLong;
+           
+        }
+
+        // If only one is negative
+        char ch = 0;
+        int j = 1;
+        for (int i = 0; i < userInput.length; i++) {
+            if (Character.isLetter(userInput[i].charAt(0))) {
+                ch = userInput[i].charAt(0);
+                j = i;
+            }
+        }
+        int y = 0;
+        if (ch == 'S') {
+            for (int i = 0; i < 3; i ++) {
+                if (i != j) {
+                    if (y == 0){
+                        latAndLong[y] = "-" + userInput[i];
+
+                    } else {
+                        latAndLong[y] = userInput[i];
+                    }
+                    y++;
+
+                } 
+            }
+        }
+
+        y = 0;
+        if (ch == 'W') {
+            for (int i = 0; i < 3; i ++) {
+                if (i != j) {
+                    if (y == 1){
+                        latAndLong[y] = "-" + userInput[i];
+                    } else {
+                        latAndLong[y] = userInput[i];
+                    }
+                    y++;
+                } 
+            }
+        }
+        return latAndLong;
+    }
+    
+
+     /**
+     * Method to convert DegMinSec with compass lable into lat and long
+     * @param userInput array to be converted
+     * @return the converted array
+     */
+    public static String [] compassDegMinSecConvert(String [] userInput) {
         return null;
     }
     
@@ -165,11 +328,11 @@ public class WhereInTheWorld2 {
                         lat = (deg + min / 60);
                     }
                 } else {
-                    errorMessage = "Unable to process4: ";
+                    errorMessage = "Unable to process8: ";
                     return userInput;
                 }
             } catch (NumberFormatException ex) {
-                errorMessage = "Unable to process5: ";
+                errorMessage = "Unable to process9: ";
                 return userInput;
             }
 
@@ -210,11 +373,11 @@ public class WhereInTheWorld2 {
                         lat = (deg + min / 60 + sec / 3600); //Convert
                     }
                 } else {
-                    errorMessage = "Unable to process6: ";
+                    errorMessage = "Unable to process10: ";
                     return userInput;
                 }
             } catch (NumberFormatException e) {
-                errorMessage = "Unable to process7: ";
+                errorMessage = "Unable to process11: ";
                 return userInput;
             }
             latAndLong[j] = Double.toString(lat);
@@ -222,7 +385,7 @@ public class WhereInTheWorld2 {
         }
         return latAndLong;
     }
-    
+
 
     /**
      * Method that counts the amount of letters and numbers in array
@@ -247,23 +410,32 @@ public class WhereInTheWorld2 {
      * @return the line after replaced.
      */
     private static String replaceNESWCoorinate(String userInput) {
-        if (userInput.contains("north"))
-            userInput = userInput.replaceAll("north", " N ");
-        if (userInput.contains("south"))
+        int n = 0, s = 0, w = 0, e = 0;
+        if (userInput.contains("north")) {
+            userInput = userInput.replaceAll("north", "N");
+        }
+        if (userInput.contains("south")) {
             userInput = userInput.replaceAll("south", " S ");
-        if (userInput.contains("east"))
-            userInput = userInput.replaceAll("east", " E ");
-        if (userInput.contains("west"))
+        }
+        if (userInput.contains("east")) {
+            userInput = userInput.replaceAll("east", "E");
+        }
+        if (userInput.contains("west")) {
             userInput = userInput.replaceAll("west", " W ");
+        }
 
-        if (userInput.contains("North"))
-            userInput = userInput.replaceAll("North", " N ");
-        if (userInput.contains("South"))
+        if (userInput.contains("North")) {
+            userInput = userInput.replaceAll("North", "N");
+        }
+        if (userInput.contains("South")) {
             userInput = userInput.replaceAll("South", " S ");
-        if (userInput.contains("East"))
-            userInput = userInput.replaceAll("East", " E ");
-        if (userInput.contains("West"))
+        }
+        if (userInput.contains("East")) {
+            userInput = userInput.replaceAll("East", "E");
+        }
+        if (userInput.contains("West")) {
             userInput = userInput.replaceAll("West", " W ");
+        }
 
         String[] temp = userInput.split(" ");
         for (String string : temp) {
@@ -273,14 +445,46 @@ public class WhereInTheWorld2 {
             }
         }
 
-        if (userInput.contains("n"))
-            userInput = userInput.replaceAll("n", " N ");
-        if (userInput.contains("s"))
+        if (userInput.contains("n")) {
+            userInput = userInput.replaceAll("n", "N");
+        }
+        if (userInput.contains("s")) {
             userInput = userInput.replaceAll("s", " S ");
-        if (userInput.contains("e"))
-            userInput = userInput.replaceAll("e", " E ");
-        if (userInput.contains("w"))
+        }
+        if (userInput.contains("e")) {
+            userInput = userInput.replaceAll("e", "E");
+        }
+        if (userInput.contains("w")) {
             userInput = userInput.replaceAll("w", " W ");
+        }
+
+        
+
+        if (userInput.contains("N")) {
+            n++;
+            userInput = userInput.replaceAll("N", "");
+        }
+        if (userInput.contains("S")) {
+            s++;
+            userInput = userInput.replaceAll("S", " S ");
+        }
+        if (userInput.contains("E")) {
+            e++;
+            userInput = userInput.replaceAll("E", "");
+        }
+        if (userInput.contains("W")) {
+            w++;
+            userInput = userInput.replaceAll("W", " W ");
+        }
+
+        if (n > 1 || s > 1 || e > 1 || w > 1) {
+            errorMessage = "Unable to process12: ";
+            return userInput;
+        } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
+            errorMessage = "Unable to process13: ";
+            return userInput;
+        }
+        
 
         return userInput;
     }
