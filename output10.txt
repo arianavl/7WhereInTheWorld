@@ -123,6 +123,7 @@ userInput: 89 68 24, 12 12 12
 Unable to process4: 89 68 24, 12 12 12
 
 userInput: 1 1, 1 1
+After SeperationDegMin Method: [1.0166666666666666, 1.0166666666666666]
 Final: [1.016666, 1.016666]
 
 userInput: 1 1 1
@@ -141,55 +142,69 @@ userInput: asdfasdf
 Unable to process-1: asdfasdf
 
 userInput: 12 12', 12 12'
+After SeperationDegMin Method: [12.2, 12.2]
 Final: [12.200000, 12.200000]
 
 userInput: E 12 12' S 12 12'
+After SeperationDegMin Method: [-12.2, 12.2]
 Final: [-12.200000, 12.200000]
 
 userInput: E 12 12', S 12 12'
+After SeperationDegMin Method: [-12.2, 12.2]
 Final: [-12.200000, 12.200000]
 
 userInput: E 12 12' W 12 12'
+After SeperationDegMin Method: [12.2, -12.2]
 Unable to process16: E 12 12' W 12 12'
 
 userInput: 12 12' S 12 12' east
+After SeperationDegMin Method: [-12.2, 12.2]
 Final: [-12.200000, 12.200000]
 
 userInput: 12 12' S, 12 12' east
+After SeperationDegMin Method: [-12.2, 12.2]
 Final: [-12.200000, 12.200000]
 
 userInput: 1 2 12' 12 12'
 Unable to process9 2: 1 2 12' 12 12'
 
 userInput: 1 2 12' E 12 12'
-Unable to process17: 1 2 12' E 12 12'
+After SeperationDegMin Method: [1, 2, 12, E, 12, 12]
+Unable to process2: 1 2 12' E 12 12'
 
 userInput: 
 Unable to process-1: 
 
 userInput: -1 2' s, 1 2
-Unable to process9 2: -1 2' s, 1 2
+After SeperationDegMin Method: [-1, 2, S, 1, 2]
+Unable to process2: -1 2' s, 1 2
 
 userInput: -1 2 s, 1 2
-Unable to process9 2: -1 2 s, 1 2
+After SeperationDegMin Method: [-1, 2, S, 1, 2]
+Unable to process2: -1 2 s, 1 2
 
 userInput: -1 2', 1 2
+After SeperationDegMin Method: [-0.9666666666666667, 1.0333333333333334]
 Final: [-0.966666, 1.033333]
 
 userInput: -1 2 n, 1 2
-Unable to process9 2: -1 2 n, 1 2
+After SeperationDegMin Method: [-1, 2, N, 1, 2]
+Unable to process2: -1 2 n, 1 2
 
 userInput: 
 Unable to process-1: 
 
 userInput: 12 12'S, 12 12
-Unable to process9 1: 12 12'S, 12 12
+After SeperationDegMin Method: [12, 12S, 12, 12]
+Unable to process2: 12 12'S, 12 12
 
 userInput: 12 12' S, 12 12
-Unable to process9 2: 12 12' S, 12 12
+After SeperationDegMin Method: [12, 12, S, 12, 12]
+Unable to process2: 12 12' S, 12 12
 
 userInput: 
 Unable to process-1: 
 
 userInput: 12 12, 12 12
+After SeperationDegMin Method: [12.2, 12.2]
 Final: [12.200000, 12.200000]

@@ -1,0 +1,21 @@
+
+userInput: 12 12'S, 12 12
+kjhsbdfk 12 12 12 12
+Hiii [12.2, 12.2]
+After SeperationDegMin Method: [12.2, 12.2]
+Final: [12.200000, 12.200000]
+
+userInput: 12 12' S, 12 12
+Unable to process9 2: 12 12' S, 12 12
+
+userInput: -1 2 n, 1 2
+Unable to process9 2: -1 2 n, 1 2
+
+userInput: 1 2 n, 1 2
+Unable to process9 2: 1 2 n, 1 2
+
+userInput: 12 12 12, 12 12 12
+Final: [12.203333, 12.203333]
+
+userInput: 12 12 12E, 12 12 12S
+kjhsbdfk 12 12 12 12 12 12 

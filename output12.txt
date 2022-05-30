@@ -1,0 +1,10 @@
+
+userInput: 12 12 E, 12 12 s
+kjhsbdfk 12 12 E 12 12 S
+After SeperationDegMin Method: [12, 12, E, 12, 12, S]
+Unable to process5: 12 12 E, 12 12 s
+
+userInput: 12 12E 12 12s
+kjhsbdfk 12 12E 12 12S
+After SeperationDegMin Method: [12, 12E, 12, 12S]
+Unable to process5: 12 12E 12 12s
