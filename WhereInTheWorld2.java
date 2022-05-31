@@ -1,11 +1,12 @@
-import java.util.*;
 import java.io.FileWriter;
 import java.util.Scanner;
 import java.util.regex.*;
 
 
 /**
- * One that wont work
+ * Class that takes a input from a user and converts it into standard Latitude and longatude Form
+ * If able.
+ * It then writes the valid coordinates into a geoJSON file
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -16,7 +17,7 @@ public class WhereInTheWorld2 {
     private static final String STANDARD_LAT = "^-?([1-8]{1}[0-9]{1}|[0-9]{1,2}|90)([.][0-9]{6})$";
     private static final String STANDARD_WORD = "([a-zA-Z]{2,20})$";
     private static String content = FILE_START;
-    private static String validCoords = "";
+    //private static String validCoords = "";
     private static String errorMessage = "";
     private static int nums, letters, total;
 
@@ -25,7 +26,7 @@ public class WhereInTheWorld2 {
         while (scan.hasNextLine()) {
             String[] latAndLong;
             String userInputOriginal = scan.nextLine();
-            System.out.println("\n" + userInputOriginal); //debugging
+            //System.out.println("\n" + userInputOriginal); //debugging
             String userInput = userInputOriginal;
             errorMessage = "";
             nums = 0;
@@ -116,10 +117,10 @@ public class WhereInTheWorld2 {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             } else if (latAndLong.length == 0) {
-                System.out.println("Unable to process1: " + userInputOriginal);
+                System.out.println("Unable to process: " + userInputOriginal);
                 continue;
             } else if (latAndLong[0] == null) {
-                System.out.println("Unable to process2: " + userInputOriginal);
+                System.out.println("Unable to process: " + userInputOriginal);
                 continue;
             }
             //System.out.println("1: " + Arrays.toString(latAndLong)); //Debugging
@@ -144,7 +145,7 @@ public class WhereInTheWorld2 {
 
             //Test once converted into standard form
             if (latAndLong.length != 2) {
-                errorMessage = "Unable to process3: ";
+                errorMessage = "Unable to process: ";
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
@@ -153,11 +154,11 @@ public class WhereInTheWorld2 {
             //If valid Write to geoJSON file
             if (latIsValid && longIsValid) {
                 addToContent(latAndLong[0], latAndLong[1]);
-                validCoords = Arrays.toString(latAndLong);
-                System.out.println("Final: " + validCoords);
-                writeToFile(content, "map1.geojson");
+                //validCoords = Arrays.toString(latAndLong);
+                //System.out.println("Final: " + validCoords);
+                writeToFile(content, "map.geojson");
             } else {
-                errorMessage = "Unable to Process4: ";
+                errorMessage = "Unable to Process: ";
                 //System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
@@ -185,7 +186,7 @@ public class WhereInTheWorld2 {
             } else if (total == 6) { // In decimals, minutes, and seconds
                 return decMinAndSecConvert(userInput);
             } else { // worng amount of values
-                errorMessage = "Unable to process5: ";
+                errorMessage = "Unable to process: ";
                 return null;
             }
         } else if (letters > 0) {
@@ -197,12 +198,12 @@ public class WhereInTheWorld2 {
             } else if (nums == 6) {
                 return compassDegMinSecConvert(userInput);
             } else { // worng amount of values
-                errorMessage = "Unable to process6: ";
+                errorMessage = "Unable to process: ";
                 return null;
             }
         }
 
-        errorMessage = "Unable to Process7: ";
+        errorMessage = "Unable to Process: ";
         return null;
 
     }
@@ -337,7 +338,7 @@ public class WhereInTheWorld2 {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            errorMessage = "Unable to process14: ";
+            errorMessage = "Unable to process: ";
             return null;
         }
 
@@ -425,7 +426,7 @@ public class WhereInTheWorld2 {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            errorMessage = "Unable to process20: ";
+            errorMessage = "Unable to process: ";
             return null;
         }
 
@@ -467,12 +468,12 @@ public class WhereInTheWorld2 {
                         lat = (deg + min / 60);
                     }
                 } else {
-                    errorMessage = "Unable to process8: ";
+                    errorMessage = "Unable to process: ";
                     return userInput;
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("latAndLong: " + Arrays.toString(latAndLong) + " userInput: " + Arrays.toString(userInput));  //debugging
-                errorMessage = "Unable to process9: ";
+                //System.out.println("latAndLong: " + Arrays.toString(latAndLong) + " userInput: " + Arrays.toString(userInput));  //debugging
+                errorMessage = "Unable to process: ";
                 return userInput;
             }
 
@@ -512,11 +513,11 @@ public class WhereInTheWorld2 {
                         lat = (deg + min / 60 + sec / 3600); //Convert
                     }
                 } else {
-                    errorMessage = "Unable to process10: ";
+                    errorMessage = "Unable to process: ";
                     return userInput;
                 }
             } catch (NumberFormatException e) {
-                errorMessage = "Unable to process11: ";
+                errorMessage = "Unable to process: ";
                 return userInput;
             }
             latAndLong[j] = Double.toString(lat);
@@ -633,7 +634,7 @@ public class WhereInTheWorld2 {
             if (index != -1) {
                 e++;
             }
-            System.out.println("index: " + e);  //debugging
+            //System.out.println("index: " + e);  //debugging
             userInput = userInput.replaceAll("E", "");
         }
         if (userInput.contains("W")) {
@@ -647,19 +648,13 @@ public class WhereInTheWorld2 {
         
         //Checks NSEW are valid combinations - isnt working
         if (n > 1 || s > 1 || e > 1 || w > 1) {
-            errorMessage = "Unable to process12: ";
+            errorMessage = "Unable to process: ";
             return userInput;
         } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
             errorMessage = "Unable to process: ";
             return userInput;
         }
-        
-        /*
-        if (userInput.contains("-") && s == 0 && w == 0 && n == 1 && e == 1) {
-        
-        }
-        
-        */
+
         return userInput;
     }
     
@@ -670,8 +665,6 @@ public class WhereInTheWorld2 {
     * @return
     */
     public static String checkOrderOfNSEW(String userInput) {
-
-        
 
         String[] twoD = { "", "" };
         // prep
@@ -689,7 +682,6 @@ public class WhereInTheWorld2 {
             }
             
         }
-
         //System.out.println("checkOrderOfNSEW prep: " + userInput);  //debugging
 
         //Trying to check oreder of compass and swap if need be
@@ -720,11 +712,9 @@ public class WhereInTheWorld2 {
                     z++;
                 }
             }
-            System.out.println("gemp: " + Arrays.toString(temp));  //debugging
 
             userInputTemp = temp;
-
-            System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
+            //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
 
         }
         for (int j = 0; j < 2; j++) {
@@ -766,7 +756,6 @@ public class WhereInTheWorld2 {
 
         for (int j = 0; j < latAndLong.length; j++) {
             
-
             if ((latAndLong[j].contains("N") || latAndLong[j].contains("S")) && j != 0) {
                 validLatLong = swapCoords(latAndLong);
                 //System.out.println("swapped coords");//Debugging
