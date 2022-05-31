@@ -1,4 +1,5 @@
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.*;
 
@@ -15,9 +16,9 @@ public class WhereInTheWorld2 {
     private static final String FILE_END = "]}}]}";
     private static final String STANDARD_LONG = "^-?([1-9]{1}[0-9]{1}|[0]{1,2}|[1-9]{1,2}|1[0-7][0-9]|180)([.][0-9]{6})$";
     private static final String STANDARD_LAT = "^-?([1-8]{1}[0-9]{1}|[0-9]{1,2}|90)([.][0-9]{6})$";
-    private static final String STANDARD_WORD = "([a-zA-Z]{2,20})$";
+    private static final String STANDARD_WORD = "([a-zA-Z,]{2,20})$";
     private static String content = FILE_START;
-    //private static String validCoords = "";
+    private static String validCoords = "";
     private static String errorMessage = "";
     private static int nums, letters, total;
 
@@ -26,7 +27,7 @@ public class WhereInTheWorld2 {
         while (scan.hasNextLine()) {
             String[] latAndLong;
             String userInputOriginal = scan.nextLine();
-            //System.out.println("\n" + userInputOriginal); //debugging
+            System.out.println("\n" + userInputOriginal); //debugging
             String userInput = userInputOriginal;
             errorMessage = "";
             nums = 0;
@@ -52,7 +53,7 @@ public class WhereInTheWorld2 {
 
             if (hasLetters(userInput) > 0) {
                 userInput = replaceNESWCoorinate(userInput);
-                if (userInput == "") {
+                if (userInput == "" || userInput == ",") {
                     errorMessage = "Unable to process: ";
                     System.out.println(errorMessage + userInputOriginal);
                     continue;
@@ -65,10 +66,10 @@ public class WhereInTheWorld2 {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
-            //System.out.println("1: " + userInput); //debugging
+            System.out.println("1: " + userInput); //debugging
 
             // Error checking
-            if (userInput.length() == 0) {
+            if (userInput.length() == 0 || userInput.length() == 1) {
                 System.out.println("Unable to process: " + userInputOriginal);
 
                 continue;
@@ -105,10 +106,19 @@ public class WhereInTheWorld2 {
             //Convert different systems into lat and long
             latAndLong = convert(userInputArray);
 
-            // Get rid of multiple '-'
-            for (int i = 0; i < latAndLong.length; i++) {
+            try {
+                // Get rid of multiple '-'
+                for (int i = 0; i < latAndLong.length; i++) {
                 latAndLong[i] = latAndLong[i].replaceAll("-+", "-"); // Replace multiple comma to single comma
             }
+            } catch (NullPointerException e) {
+                //TODO: handle exception
+                errorMessage = "Unable to process: ";
+                System.out.println(errorMessage + userInputOriginal);
+                continue;
+            }
+
+            
 
             //System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
 
@@ -154,8 +164,8 @@ public class WhereInTheWorld2 {
             //If valid Write to geoJSON file
             if (latIsValid && longIsValid) {
                 addToContent(latAndLong[0], latAndLong[1]);
-                //validCoords = Arrays.toString(latAndLong);
-                //System.out.println("Final: " + validCoords);
+                validCoords = Arrays.toString(latAndLong);
+                System.out.println("Final: " + validCoords);
                 writeToFile(content, "map.geojson");
             } else {
                 errorMessage = "Unable to Process: ";
@@ -581,7 +591,7 @@ public class WhereInTheWorld2 {
         userInput = userInput.replaceAll(STANDARD_WORD, ""); // Replace multiple comma to single comma
         //System.out.println("After replace standardWord: " + userInput); //Debugging
         
-        //System.out.println("after getting rid of strings: " + userInput);  //debugging
+        System.out.println("after getting rid of strings: " + userInput);  //debugging
         
         if (userInput.isEmpty()) {
             errorMessage = "Unable to process: ";
