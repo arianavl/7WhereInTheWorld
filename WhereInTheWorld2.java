@@ -11,6 +11,7 @@ import java.util.regex.*;
  * 12, W 13 - takes 12 as W
  * -12E, -12S
  * 12 13 west
+ * -1 2 s, 1 3
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -49,7 +50,7 @@ public class WhereInTheWorld2 {
                     System.out.println(errorMessage + userInputOriginal);
                     continue;
                 }
-                
+
             }
             //Check to see if array seems correct
             if (errorMessage != "") {
@@ -207,14 +208,6 @@ public class WhereInTheWorld2 {
     public static String[] compasslatLongConvert(String[] userInput) {
         String[] latAndLong = new String[2];
 
-        /*
-        
-        if (ch == 'S' && j > 1) {
-        String[] temp = new String[4];
-        temp [0]
-        }
-        
-        */
         if (letters == 2) {
             int z = 0;
             for (int i = 0; i < userInput.length; i++) {
@@ -510,7 +503,6 @@ public class WhereInTheWorld2 {
         return latAndLong;
     }
 
-    
     /**
      * Method that counts the amount of letters and numbers in array
      * @param userInputArray The array to be counted
@@ -592,6 +584,11 @@ public class WhereInTheWorld2 {
 
         userInput = checkOrderOfNSEW(userInput);
 
+        // Checks to see whether still valid
+        if (errorMessage != "") {
+            return userInput;
+        }
+
         
 
         //System.out.println("After checkOrderOfNSEW: " + userInput); // debugging
@@ -639,19 +636,24 @@ public class WhereInTheWorld2 {
             return userInput;
         }
 
-        return userInput;
+    /*
+    if (userInput.contains("-") && s == 0 && w == 0 && n == 1 && e == 1) {
+        
     }
     
-
+    */
+    return userInput;
+    }
+    
+    
     /**
-     * Method that checks and corrects the order of NSEW
-     * @param userInput
-     * @return
-     */
+    * Method that checks and corrects the order of NSEW
+    * @param userInput
+    * @return
+    */
     public static String checkOrderOfNSEW(String userInput) {
 
-
-        String[] twoD = {"",""};
+        String[] twoD = { "", "" };
         // prep
         userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
         userInput = removeLeadingSpaces(userInput); //Remove leading spaces
@@ -662,7 +664,6 @@ public class WhereInTheWorld2 {
         String[] userInputTemp = userInput.split(" ");
 
         //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
-
 
         int y = userInputTemp.length / 2;
         if (userInputTemp.length % 2 != 0) {
@@ -689,8 +690,7 @@ public class WhereInTheWorld2 {
 
             //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
 
-
-        } 
+        }
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < userInputTemp.length / 2; i++) {
                 if (j == 1) {
@@ -705,33 +705,12 @@ public class WhereInTheWorld2 {
         //System.out.println("twoD 1: " + Arrays.toString(twoD)); //debugging
         twoD = checkOrderOfLatAndLong(twoD);
 
-            /*
-            y = (userInputTemp.length / 2) + 1;
-            for (int j = 0; j < 2; j++) {
-                for (int i = 0; i < userInputTemp.length / 2 + 1; i++) {
-                    if (j == 1) {
-                        if (y < userInputTemp.length) {
-                            twoD[j] += userInputTemp[y] + " ";
-                        }
-                        y++;
-                    } else {
-                        twoD[j] += userInputTemp[i] + " ";
-                    }
-                }
-            }
-            */
-            //System.out.println("twoD 2: " + Arrays.toString(twoD)); //debugging
-            //twoD = checkOrderOfLatAndLong(twoD);
-
-        
-
         userInput = twoD[0] + " " + twoD[1];
 
         return userInput;
     }
 
-
- /**
+    /**
      * Method to check whether lat and long are in the correct order by looking
      * at whether it contains E, S, W, N
      * @param latAndLong the array to be checked
@@ -740,7 +719,17 @@ public class WhereInTheWorld2 {
 
     public static String[] checkOrderOfLatAndLong(String[] latAndLong) {
         String[] validLatLong = new String[2];
+
+        //Check to see if there is a negative and a lable that doesnt match on same value
+            if (latAndLong[0].contains("-") && (latAndLong[0].contains("N") || latAndLong[0].contains("E"))) {
+                errorMessage = "Unable to process: ";
+                return latAndLong;
+            } else if (latAndLong[1].contains("-") && (latAndLong[1].contains("N") || latAndLong[1].contains("E"))) {
+                
+            }
+
         for (int j = 0; j < latAndLong.length; j++) {
+            
 
             if ((latAndLong[j].contains("N") || latAndLong[j].contains("S")) && j != 0) {
                 validLatLong = swapCoords(latAndLong);
@@ -762,7 +751,7 @@ public class WhereInTheWorld2 {
 
         return validLatLong;
     }
-    
+
     /**
      * Method to swap the coordinates around if longatude was put first
      * @param coords the array to be swapped
@@ -821,7 +810,6 @@ public class WhereInTheWorld2 {
         } catch (Exception e) {
         }
     }
-
 
     /**
      * Recursive method to remove any leading spaces
