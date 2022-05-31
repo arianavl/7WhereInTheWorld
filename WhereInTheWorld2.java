@@ -7,6 +7,11 @@ import java.util.regex.*;
 /**
  * One that wont work
  * 12 12 12 12Dunedin
+ * 12 13 S
+ * 12, W 13 - takes 12 as W
+ * -12E, -12S
+ * 12 13 west
+ * 12 w 12 W
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -32,16 +37,27 @@ public class WhereInTheWorld2 {
             nums = 0;
             letters = 0;
             total = 0;
+            userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
+            userInput = userInput.replaceAll("[°\'\"″]", "");
 
             //Get rid of all extra labels and convert compass lables into N, S, E, W
             // Seperated with spaces
-            userInput = replaceNESWCoorinate(userInput);
+
+            if (hasLetters(userInput) > 0) {
+                userInput = replaceNESWCoorinate(userInput);
+                if (userInput == "") {
+                    errorMessage = "Unable to process: ";
+                    System.out.println(errorMessage + userInputOriginal);
+                    continue;
+                }
+                
+            }
             //Check to see if array seems correct
             if (errorMessage != "") {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
-            System.out.println("1: " + userInput); //debugging
+            //System.out.println("1: " + userInput); //debugging
 
             // Error checking
             if (userInput.length() == 0) {
@@ -64,13 +80,19 @@ public class WhereInTheWorld2 {
                 continue;
             }
 
-            System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
+            //System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
 
             //Total
             total = userInputArray.length;
 
             //counts amount of letters and nums
             countLettersAndNums(userInputArray);
+
+            if (nums % 2 != 0) {
+                errorMessage = "Unable to process: ";
+                System.out.println(errorMessage + userInputOriginal);
+                continue;
+            }
 
             //Convert different systems into lat and long
             latAndLong = convert(userInputArray);
@@ -80,7 +102,7 @@ public class WhereInTheWorld2 {
                 latAndLong[i] = latAndLong[i].replaceAll("-+", "-"); // Replace multiple comma to single comma
             }
 
-            System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
+            //System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
 
             //Check to see if array seems correct
             if (errorMessage != "") {
@@ -129,7 +151,7 @@ public class WhereInTheWorld2 {
                 writeToFile(content, "map1.geojson");
             } else {
                 errorMessage = "Unable to Process4: ";
-                System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
+                //System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
 
@@ -266,7 +288,7 @@ public class WhereInTheWorld2 {
                     i += 2;
                 }
             }
-            System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
+            //System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
 
             return decAndMinsConvert(latAndLongBefore);
         }
@@ -320,7 +342,7 @@ public class WhereInTheWorld2 {
             return null;
         }
 
-        System.out.println("10: " + Arrays.toString(latAndLongBefore)); //debugging
+        //System.out.println("10: " + Arrays.toString(latAndLongBefore)); //debugging
         return decAndMinsConvert(latAndLongBefore);
     }
 
@@ -344,7 +366,7 @@ public class WhereInTheWorld2 {
                     i += 3;
                 }
             }
-            System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
+            //System.out.println("11: " + Arrays.toString(latAndLongBefore)); //debugging
 
             return decMinAndSecConvert(latAndLongBefore);
         }
@@ -402,7 +424,7 @@ public class WhereInTheWorld2 {
             return null;
         }
 
-        System.out.println("19: " + Arrays.toString(latAndLongBefore)); //debugging
+        //System.out.println("19: " + Arrays.toString(latAndLongBefore)); //debugging
         return decMinAndSecConvert(latAndLongBefore);
     }
 
@@ -489,22 +511,6 @@ public class WhereInTheWorld2 {
         return latAndLong;
     }
 
-    /*
-    public static String[] checkOrderOfCompass(String[] userInput) {
-        int mid = userInput.length / 2;
-        String[][] swapArray = new String[2][mid];
-        int z = 0;
-        for (int i = 0; i < swapArray.length; i++) {
-            for (int j = 0; j < mid; j++) {
-                swapArray[i][j] = userInput[z];
-                z++;
-            }
-        }
-    
-        System.out.println("21: " + Arrays.toString(swapArray[0]) + "\t" + Arrays.toString(swapArray[1]));
-        return null;
-    }
-    */
     
     /**
      * Method that counts the amount of letters and numbers in array
@@ -563,6 +569,13 @@ public class WhereInTheWorld2 {
             }
         }
 
+        //System.out.println("after getting rid of strings: " + userInput);  //debugging
+
+        if (userInput.isEmpty()) {
+            errorMessage = "Unable to process: ";
+            return userInput;
+        }
+
         if (userInput.contains("n")) {
             userInput = userInput.replaceAll("n", " N ");
         }
@@ -576,13 +589,13 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("w", " W ");
         }
 
-        System.out.println("Before checkOrderOfNSEW: " + userInput); //debugging
+        //System.out.println("Before checkOrderOfNSEW: " + userInput); //debugging
 
         userInput = checkOrderOfNSEW(userInput);
 
         
 
-        System.out.println("After checkOrderOfNSEW: " + userInput); // debugging
+        //System.out.println("After checkOrderOfNSEW: " + userInput); // debugging
 
         if (userInput.contains("N")) {
             n++;
@@ -601,12 +614,15 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("W", " W ");
         }
 
-        //Checks NSEW are valid combinations
+        //Checks NSEW are valid combinations - isnt working
         if (n > 1 || s > 1 || e > 1 || w > 1) {
             errorMessage = "Unable to process12: ";
             return userInput;
-        } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
-            errorMessage = "Unable to process13: ";
+        }
+
+
+        if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
+            errorMessage = "Unable to process: ";
             return userInput;
         }
 
@@ -620,51 +636,81 @@ public class WhereInTheWorld2 {
      * @return
      */
     public static String checkOrderOfNSEW(String userInput) {
+
+
         String[] twoD = {"",""};
         // prep
         userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
         userInput = removeLeadingSpaces(userInput); //Remove leading spaces
 
-        System.out.println("checkOrderOfNSEW prep: " + userInput);
+        //System.out.println("checkOrderOfNSEW prep: " + userInput);  //debugging
 
         //Trying to check oreder of compass and swap if need be
         String[] userInputTemp = userInput.split(" ");
 
-        int y = userInputTemp.length / 2;
-        if (userInputTemp.length % 2 == 0) {
-            for (int j = 0; j < 2; j++) {
-                for (int i = 0; i < userInputTemp.length / 2; i++) {
-                    if (j == 1) {
-                        twoD[j] += userInputTemp[y] + " ";
-                        y++;
-                    } else {
+        //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
 
-                        twoD[j] += userInputTemp[i] + " ";
+
+        int y = userInputTemp.length / 2;
+        if (userInputTemp.length % 2 != 0) {
+            String[] temp = new String[userInputTemp.length - 1];
+            int z = 0;
+            for (int i = 0; i < userInputTemp.length; i++) {
+                if (Character.isLetter(userInputTemp[i].charAt(0))) {
+                    if (i == 0) {
+                        temp[z] = userInputTemp[i].charAt(0) + " " + userInputTemp[i + 1];
+                        z++;
+                        i++;
+                    } else if (i == userInputTemp.length / 2) {
+                        temp[z - 1] = userInputTemp[i - 1] + " " + userInputTemp[i].charAt(0);
+                        //z++;
                     }
+                } else {
+                    temp[z] = userInputTemp[i];
+                    z++;
                 }
             }
-            System.out.println("twoD 1: " + Arrays.toString(twoD)); //debugging
-            twoD = checkOrderOfLatAndLong(twoD);
-        } else { // If odd/only one compass
+            //System.out.println("gemp: " + Arrays.toString(temp));  //debugging
+
+            userInputTemp = temp;
+
+            //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
+
+
+        } 
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < userInputTemp.length / 2; i++) {
+                if (j == 1) {
+                    twoD[j] += userInputTemp[y] + " ";
+                    y++;
+                } else {
+
+                    twoD[j] += userInputTemp[i] + " ";
+                }
+            }
+        }
+        //System.out.println("twoD 1: " + Arrays.toString(twoD)); //debugging
+        twoD = checkOrderOfLatAndLong(twoD);
+
+            /*
             y = (userInputTemp.length / 2) + 1;
             for (int j = 0; j < 2; j++) {
-                for (int i = 0; i < userInputTemp.length / 2; i++) {
+                for (int i = 0; i < userInputTemp.length / 2 + 1; i++) {
                     if (j == 1) {
-                        if (y != userInputTemp.length) {
-
+                        if (y < userInputTemp.length) {
                             twoD[j] += userInputTemp[y] + " ";
                         }
                         y++;
                     } else {
-
                         twoD[j] += userInputTemp[i] + " ";
                     }
                 }
             }
-            System.out.println("twoD 2: " + Arrays.toString(twoD)); //debugging
-            twoD = checkOrderOfLatAndLong(twoD);
+            */
+            //System.out.println("twoD 2: " + Arrays.toString(twoD)); //debugging
+            //twoD = checkOrderOfLatAndLong(twoD);
 
-        }
+        
 
         userInput = twoD[0] + " " + twoD[1];
 
@@ -678,6 +724,7 @@ public class WhereInTheWorld2 {
      * @param latAndLong the array to be checked
      * @return an Array in the correct order
      */
+
     public static String[] checkOrderOfLatAndLong(String[] latAndLong) {
         String[] validLatLong = new String[2];
         for (int j = 0; j < latAndLong.length; j++) {
@@ -774,6 +821,21 @@ public class WhereInTheWorld2 {
             removeLeadingSpaces(userInput);
         }
         return userInput;
+    }
+
+    /**
+     * Method to check if any of the charaters in String input are letters
+     * @param input String
+     * @return whether it has letters
+     */
+    public static int hasLetters(String input) {
+        int amountOfLetters = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (Character.isLetter(input.charAt(i))) {
+                amountOfLetters++;
+            }
+        }
+        return amountOfLetters;
     }
 
 }
