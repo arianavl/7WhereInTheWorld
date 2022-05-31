@@ -216,7 +216,7 @@ public class WhereInTheWorld2 {
     public static String[] compasslatLongConvert(String[] userInput) {
         String[] latAndLong = new String[2];
 
-        if (letters == 2) {
+        if (letters == 2) { // replace both with "-"
             int z = 0;
             for (int i = 0; i < userInput.length; i++) {
                 if (!Character.isLetter(userInput[i].charAt(0))) {
@@ -228,6 +228,7 @@ public class WhereInTheWorld2 {
 
         }
 
+        // Find index of char and the char
         char ch = 0;
         int j = 1;
         for (int i = 0; i < userInput.length; i++) {
@@ -237,6 +238,7 @@ public class WhereInTheWorld2 {
             }
         }
 
+        // Replace appropriate one with "-"
         int y = 0;
         if (ch == 'S') {
             for (int i = 0; i < 3; i++) {
