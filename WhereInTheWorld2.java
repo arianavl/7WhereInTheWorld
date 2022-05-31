@@ -7,7 +7,6 @@ import java.util.regex.*;
 /**
  * One that wont work
  * 12, W 13 - takes 12 as W
- * -1 2 s, 1 3
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -343,6 +342,12 @@ public class WhereInTheWorld2 {
     public static String[] compassDegMinSecConvert(String[] userInput) {
         String[] latAndLongBefore = new String[6];
 
+        // Get rid of extra '-'
+        for (int i = 0; i < userInput.length; i++) {
+            userInput[i] = userInput[i].replaceAll("-+", "-"); // Replace multiple comma to single comma
+        }
+
+
         //If both need to be negative
         if (letters == 2) {
             int z = 0;
@@ -423,9 +428,17 @@ public class WhereInTheWorld2 {
      * @return lat and long
      */
     public static String[] decAndMinsConvert(String[] userInput) {
+
         String[] latAndLong = new String[2];
         double lat = 0.0;
         int j = 0;
+
+        // Get rid of extra '-'
+        for (int i = 0; i < userInput.length; i++) {
+            userInput[i] = userInput[i].replaceAll("-+", "-"); // Replace multiple comma to single comma
+        }
+
+
         for (int i = 0; i < userInput.length; i += 2) {
             try {
                 Double deg = Double.parseDouble(userInput[i]);
@@ -447,6 +460,7 @@ public class WhereInTheWorld2 {
                     return userInput;
                 }
             } catch (NumberFormatException ex) {
+                System.out.println("latAndLong: " + Arrays.toString(latAndLong) + " userInput: " + Arrays.toString(userInput));  //debugging
                 errorMessage = "Unable to process9: ";
                 return userInput;
             }
