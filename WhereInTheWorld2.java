@@ -53,9 +53,9 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
             userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
 
-            if (userInput.charAt(0) == ' ') {
-                userInput = userInput.substring(1);
-            }
+            //Get rid of leading spaces
+            userInput = removeLeadingSpaces(userInput);
+
             // Split into an array
             String[] userInputArray = userInput.split(" ");
             if (userInputArray.length < 2) {
@@ -530,29 +530,29 @@ public class WhereInTheWorld2 {
     private static String replaceNESWCoorinate(String userInput) {
         int n = 0, s = 0, w = 0, e = 0;
         if (userInput.contains("north")) {
-            userInput = userInput.replaceAll("north", "N");
+            userInput = userInput.replaceAll("north", " N ");
         }
         if (userInput.contains("south")) {
-            userInput = userInput.replaceAll("south", "S");
+            userInput = userInput.replaceAll("south", " S ");
         }
         if (userInput.contains("east")) {
-            userInput = userInput.replaceAll("east", "E");
+            userInput = userInput.replaceAll("east", " E ");
         }
         if (userInput.contains("west")) {
-            userInput = userInput.replaceAll("west", "W");
+            userInput = userInput.replaceAll("west", " W ");
         }
 
         if (userInput.contains("North")) {
-            userInput = userInput.replaceAll("North", "N");
+            userInput = userInput.replaceAll("North", " N ");
         }
         if (userInput.contains("South")) {
-            userInput = userInput.replaceAll("South", "S");
+            userInput = userInput.replaceAll("South", " S ");
         }
         if (userInput.contains("East")) {
-            userInput = userInput.replaceAll("East", "E");
+            userInput = userInput.replaceAll("East", " E ");
         }
         if (userInput.contains("West")) {
-            userInput = userInput.replaceAll("West", "W");
+            userInput = userInput.replaceAll("West", " W ");
         }
 
         String[] temp = userInput.split(" ");
@@ -564,39 +564,25 @@ public class WhereInTheWorld2 {
         }
 
         if (userInput.contains("n")) {
-            userInput = userInput.replaceAll("n", "N");
+            userInput = userInput.replaceAll("n", " N ");
         }
         if (userInput.contains("s")) {
-            userInput = userInput.replaceAll("s", "S");
+            userInput = userInput.replaceAll("s", " S ");
         }
         if (userInput.contains("e")) {
-            userInput = userInput.replaceAll("e", "E");
+            userInput = userInput.replaceAll("e", " E ");
         }
         if (userInput.contains("w")) {
-            userInput = userInput.replaceAll("w", "W");
+            userInput = userInput.replaceAll("w", " W ");
         }
 
-        //Trying to check oreder of compass and swap if need be
-        String[] userInputTemp = userInput.split(" ");
-        int len = userInputTemp.length / 2;
-        String[] splitInHalf = new String[2];
-        int i = 0;
-        for (int y = 0; y < 2; y++) {
-            i = 0;
-            try {
-                while (i < len) {
-                    splitInHalf[y] += userInputTemp[i] + " ";
-                    i++;
-                }
-            } catch (NullPointerException ex) {
-                //TODO: handle exception
-            }
-            y++;
-        }
+        System.out.println("Before checkOrderOfNSEW: " + userInput); //debugging
 
-        System.out.println("Split in half: " + Arrays.toString(splitInHalf)); // debugging
+        userInput = checkOrderOfNSEW(userInput);
 
+        
 
+        System.out.println("After checkOrderOfNSEW: " + userInput); // debugging
 
         if (userInput.contains("N")) {
             n++;
@@ -615,6 +601,7 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("W", " W ");
         }
 
+        //Checks NSEW are valid combinations
         if (n > 1 || s > 1 || e > 1 || w > 1) {
             errorMessage = "Unable to process12: ";
             return userInput;
@@ -624,6 +611,108 @@ public class WhereInTheWorld2 {
         }
 
         return userInput;
+    }
+    
+
+    /**
+     * Method that checks and corrects the order of NSEW
+     * @param userInput
+     * @return
+     */
+    public static String checkOrderOfNSEW(String userInput) {
+        String[] twoD = {"",""};
+        // prep
+        userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
+        userInput = removeLeadingSpaces(userInput); //Remove leading spaces
+
+        System.out.println("checkOrderOfNSEW prep: " + userInput);
+
+        //Trying to check oreder of compass and swap if need be
+        String[] userInputTemp = userInput.split(" ");
+
+        int y = userInputTemp.length / 2;
+        if (userInputTemp.length % 2 == 0) {
+            for (int j = 0; j < 2; j++) {
+                for (int i = 0; i < userInputTemp.length / 2; i++) {
+                    if (j == 1) {
+                        twoD[j] += userInputTemp[y] + " ";
+                        y++;
+                    } else {
+
+                        twoD[j] += userInputTemp[i] + " ";
+                    }
+                }
+            }
+            System.out.println("twoD 1: " + Arrays.toString(twoD)); //debugging
+            twoD = checkOrderOfLatAndLong(twoD);
+        } else { // If odd/only one compass
+            y = (userInputTemp.length / 2) + 1;
+            for (int j = 0; j < 2; j++) {
+                for (int i = 0; i < userInputTemp.length / 2; i++) {
+                    if (j == 1) {
+                        if (y != userInputTemp.length) {
+
+                            twoD[j] += userInputTemp[y] + " ";
+                        }
+                        y++;
+                    } else {
+
+                        twoD[j] += userInputTemp[i] + " ";
+                    }
+                }
+            }
+            System.out.println("twoD 2: " + Arrays.toString(twoD)); //debugging
+            twoD = checkOrderOfLatAndLong(twoD);
+
+        }
+
+        userInput = twoD[0] + " " + twoD[1];
+
+        return userInput;
+    }
+
+
+ /**
+     * Method to check whether lat and long are in the correct order by looking
+     * at whether it contains E, S, W, N
+     * @param latAndLong the array to be checked
+     * @return an Array in the correct order
+     */
+    public static String[] checkOrderOfLatAndLong(String[] latAndLong) {
+        String[] validLatLong = new String[2];
+        for (int j = 0; j < latAndLong.length; j++) {
+
+            if ((latAndLong[j].contains("N") || latAndLong[j].contains("S")) && j != 0) {
+                validLatLong = swapCoords(latAndLong);
+                //System.out.println("swapped coords");//Debugging
+                //System.out.println("24: " + Arrays.toString(validLatLong)); //Debugging
+                return validLatLong;
+
+            } else if ((latAndLong[j].contains("W") || latAndLong[j].contains("E")) && j != 1) {
+                validLatLong = swapCoords(latAndLong);
+                //System.out.println("swapped coords");//Debugging
+                //System.out.println("4: " + Arrays.toString(validLatLong)); //Debugging
+                return validLatLong;
+
+            } else {
+                validLatLong = latAndLong;
+                //return validLatLong;
+            }
+        }
+
+        return validLatLong;
+    }
+    
+    /**
+     * Method to swap the coordinates around if longatude was put first
+     * @param coords the array to be swapped
+     * @return the swapped array
+     */
+    public static String[] swapCoords(String[] coords) {
+        String[] swappedCoords = new String[2];
+        swappedCoords[0] = coords[1];
+        swappedCoords[1] = coords[0];
+        return swappedCoords;
     }
 
     /**
@@ -671,6 +760,20 @@ public class WhereInTheWorld2 {
             myWriter.close();
         } catch (Exception e) {
         }
+    }
+
+
+    /**
+     * Recursive method to remove any leading spaces
+     * @param userInput string to remove leading spaces
+     * @return the same string without leading spaces
+     */
+    public static String removeLeadingSpaces(String userInput) {
+        if (userInput.charAt(0) == ' ') {
+            userInput = userInput.substring(1);
+            removeLeadingSpaces(userInput);
+        }
+        return userInput;
     }
 
 }
