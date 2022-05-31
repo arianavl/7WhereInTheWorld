@@ -11,7 +11,6 @@ import java.util.regex.*;
  * 12, W 13 - takes 12 as W
  * -12E, -12S
  * 12 13 west
- * 12 w 12 W
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -599,18 +598,35 @@ public class WhereInTheWorld2 {
 
         if (userInput.contains("N")) {
             n++;
+            int index = userInput.indexOf("N", userInput.indexOf('N') + 1);
+            if (index != -1) {
+                n++;
+            }
             userInput = userInput.replaceAll("N", "");
         }
         if (userInput.contains("S")) {
             s++;
+            int index = userInput.indexOf("S", userInput.indexOf('S')+ 1);
+            if (index != -1) {
+                s++;
+            }
             userInput = userInput.replaceAll("S", " S ");
         }
         if (userInput.contains("E")) {
             e++;
+            int index = userInput.indexOf("E", userInput.indexOf('E')+ 1);
+            if (index != -1) {
+                e++;
+            }
+            System.out.println("index: " + e);  //debugging
             userInput = userInput.replaceAll("E", "");
         }
         if (userInput.contains("W")) {
             w++;
+            int index = userInput.indexOf("W", userInput.indexOf('W')+ 1);
+            if (index != -1) {
+                w++;
+            }
             userInput = userInput.replaceAll("W", " W ");
         }
 
@@ -618,10 +634,7 @@ public class WhereInTheWorld2 {
         if (n > 1 || s > 1 || e > 1 || w > 1) {
             errorMessage = "Unable to process12: ";
             return userInput;
-        }
-
-
-        if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
+        } else if ((n == 1 && s == 1) || (w == 1 && e == 1)) {
             errorMessage = "Unable to process: ";
             return userInput;
         }
