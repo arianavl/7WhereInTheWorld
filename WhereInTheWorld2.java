@@ -6,7 +6,6 @@ import java.util.regex.*;
 
 /**
  * One that wont work
- * 12 12 12 12Dunedin
  * 12, W 13 - takes 12 as W
  * -1 2 s, 1 3
  */
@@ -550,21 +549,22 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("West", " W ");
         }
 
-        String[] temp = userInput.split(" ");
-        for (String string : temp) {
-            if (Pattern.matches(STANDARD_WORD, string)) {
-                userInput = userInput.replaceAll(string, "");
+        //Removes labels
+        for (int i = 0; i < userInput.length(); i++) {
+            String temp = userInput.substring(i);
+            if (Pattern.matches(STANDARD_WORD, temp)) {
+                userInput = userInput.replaceAll(temp, "");
 
             }
         }
-
+        
         //System.out.println("after getting rid of strings: " + userInput);  //debugging
-
+        
         if (userInput.isEmpty()) {
             errorMessage = "Unable to process: ";
             return userInput;
         }
-
+        
         if (userInput.contains("n")) {
             userInput = userInput.replaceAll("n", " N ");
         }
@@ -577,20 +577,20 @@ public class WhereInTheWorld2 {
         if (userInput.contains("w")) {
             userInput = userInput.replaceAll("w", " W ");
         }
-
+        
         //System.out.println("Before checkOrderOfNSEW: " + userInput); //debugging
-
+        
         userInput = checkOrderOfNSEW(userInput);
-
+        
         // Checks to see whether still valid
         if (errorMessage != "") {
             return userInput;
         }
-
         
-
+        
+        
         //System.out.println("After checkOrderOfNSEW: " + userInput); // debugging
-
+        
         if (userInput.contains("N")) {
             n++;
             int index = userInput.indexOf("N", userInput.indexOf('N') + 1);
@@ -624,7 +624,7 @@ public class WhereInTheWorld2 {
             }
             userInput = userInput.replaceAll("W", " W ");
         }
-
+        
         //Checks NSEW are valid combinations - isnt working
         if (n > 1 || s > 1 || e > 1 || w > 1) {
             errorMessage = "Unable to process12: ";
@@ -633,14 +633,14 @@ public class WhereInTheWorld2 {
             errorMessage = "Unable to process: ";
             return userInput;
         }
-
-    /*
-    if (userInput.contains("-") && s == 0 && w == 0 && n == 1 && e == 1) {
         
-    }
-    
-    */
-    return userInput;
+        /*
+        if (userInput.contains("-") && s == 0 && w == 0 && n == 1 && e == 1) {
+        
+        }
+        
+        */
+        return userInput;
     }
     
     
