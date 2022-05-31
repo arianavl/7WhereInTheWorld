@@ -9,6 +9,8 @@ Final: [12.000000, 12.000000]
 Final: [-12.000000, -12.000000]
 
 23.6 W, -50.00
+gemp: [23.6 W, -50.00]
+After temp: [23.6 W, -50.00]
 Final: [-50.000000, -23.600000]
 
 45.9 S, 170.5 E Dunedin
@@ -53,14 +55,20 @@ Final: [12.123123, 12.123000]
 Final: [12.000000, 13.000000]
 
 12 E 13
+gemp: [12 E, 13]
+After temp: [12 E, 13]
 index: 1
 Final: [13.000000, 12.000000]
 
 12 13 west
-Final: [12.000000, 13.000000]
+gemp: [12, 13W]
+After temp: [12, 13W]
+Final: [12.000000, -13.000000]
 
 12 13 south
-Final: [12.000000, 13.000000]
+gemp: [12, 13S]
+After temp: [12, 13S]
+Final: [-13.000000, 12.000000]
 
 12 w 13 W
 Unable to process12: 12 w 13 W
@@ -76,9 +84,13 @@ Final: [-13.000000, -12.000000]
 Final: [13.000000, -12.000000]
 
 12 w, 13
+gemp: [12 W, 13]
+After temp: [12 W, 13]
 Final: [13.000000, -12.000000]
 
 12, W 13
+gemp: [12 W, 13]
+After temp: [12 W, 13]
 Final: [13.000000, -12.000000]
 
 12 w, 1 2
@@ -88,6 +100,8 @@ Unable to process: 12 w, 1 2
 Final: [-13.000000, -12.000000]
 
 12, w, 13
+gemp: [12 W, 13]
+After temp: [12 W, 13]
 Final: [13.000000, -12.000000]
 
 12 12' 13" 12 12' 12"
@@ -184,15 +198,21 @@ Unable to process: 1 2 12' E 13 12'
 Unable to process: 
 
 -1 2' s, 1 3
+gemp: [-1, 2 S, 1, 3]
+After temp: [-1, 2 S, 1, 3]
 Unable to process9: -1 2' s, 1 3
 
 -1 2 s, 1 3
+gemp: [-1, 2 S, 1, 3]
+After temp: [-1, 2 S, 1, 3]
 Unable to process9: -1 2 s, 1 3
 
 -1 2', 1 3
 Final: [-1.033333, 1.050000]
 
 -1 2 n, 1 3
+gemp: [-1, 2 N, 1, 3]
+After temp: [-1, 2 N, 1, 3]
 Unable to process: -1 2 n, 1 3
 
 
@@ -202,6 +222,8 @@ Unable to process:
 Final: [-12.200000, 13.200000]
 
 12 12' S, 13 12
+gemp: [12, 12 S, 13, 12]
+After temp: [12, 12 S, 13, 12]
 Final: [-12.200000, 13.200000]
 
 
@@ -214,4 +236,6 @@ Final: [12.200000, 12.216666]
 Final: [-13.000000, 12.000000]
 
 12 13 south
-Final: [12.000000, 13.000000]
+gemp: [12, 13S]
+After temp: [12, 13S]
+Final: [-13.000000, 12.000000]

@@ -7,10 +7,7 @@ import java.util.regex.*;
 /**
  * One that wont work
  * 12 12 12 12Dunedin
- * 12 13 S
  * 12, W 13 - takes 12 as W
- * -12E, -12S
- * 12 13 west
  * -1 2 s, 1 3
  */
 public class WhereInTheWorld2 {
@@ -52,6 +49,7 @@ public class WhereInTheWorld2 {
                 }
 
             }
+            
             //Check to see if array seems correct
             if (errorMessage != "") {
                 System.out.println(errorMessage + userInputOriginal);
@@ -666,7 +664,7 @@ public class WhereInTheWorld2 {
         //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
 
         int y = userInputTemp.length / 2;
-        if (userInputTemp.length % 2 != 0) {
+        if (userInputTemp.length % 2 != 0) { // add char to nums
             String[] temp = new String[userInputTemp.length - 1];
             int z = 0;
             for (int i = 0; i < userInputTemp.length; i++) {
@@ -678,17 +676,21 @@ public class WhereInTheWorld2 {
                     } else if (i == userInputTemp.length / 2) {
                         temp[z - 1] = userInputTemp[i - 1] + " " + userInputTemp[i].charAt(0);
                         //z++;
+                    } else if (i == userInputTemp.length -1) {
+                        temp[z - 1] += userInputTemp[i].charAt(0);
+                        z++;
+                        i++;
                     }
                 } else {
                     temp[z] = userInputTemp[i];
                     z++;
                 }
             }
-            //System.out.println("gemp: " + Arrays.toString(temp));  //debugging
+            System.out.println("gemp: " + Arrays.toString(temp));  //debugging
 
             userInputTemp = temp;
 
-            //System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
+            System.out.println("After temp: " + Arrays.toString(userInputTemp));  //debugging
 
         }
         for (int j = 0; j < 2; j++) {
