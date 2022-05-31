@@ -6,7 +6,6 @@ import java.util.regex.*;
 
 /**
  * One that wont work
- * 12, W 13 - takes 12 as W
  */
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
@@ -32,7 +31,19 @@ public class WhereInTheWorld2 {
             nums = 0;
             letters = 0;
             total = 0;
-            userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
+
+
+            userInput = userInput.replaceAll(",+", ","); // Replace multiple comma to single comma
+
+            // If there is more than one ',' change them all into spaces
+            if (userInput.indexOf(",") != 1) {
+                int moreThanOneComer = userInput.indexOf(",", userInput.indexOf(",") + 1);
+                if (moreThanOneComer != -1) {
+                    userInput = userInput.replaceAll(",", " "); // Replace multiple comma to single comma
+                }
+            }
+
+            userInput = userInput.replaceAll(", ", ","); // Replace multiple comma to single comma
             userInput = userInput.replaceAll("[°\'\"″]", "");
 
             //Get rid of all extra labels and convert compass lables into N, S, E, W
@@ -563,14 +574,9 @@ public class WhereInTheWorld2 {
             userInput = userInput.replaceAll("West", " W ");
         }
 
-        //Removes labels
-        for (int i = 0; i < userInput.length(); i++) {
-            String temp = userInput.substring(i);
-            if (Pattern.matches(STANDARD_WORD, temp)) {
-                userInput = userInput.replaceAll(temp, "");
-
-            }
-        }
+        // Remove labels
+        userInput = userInput.replaceAll(STANDARD_WORD, ""); // Replace multiple comma to single comma
+        //System.out.println("After replace standardWord: " + userInput); //Debugging
         
         //System.out.println("after getting rid of strings: " + userInput);  //debugging
         
@@ -665,10 +671,24 @@ public class WhereInTheWorld2 {
     */
     public static String checkOrderOfNSEW(String userInput) {
 
+        
+
         String[] twoD = { "", "" };
         // prep
         userInput = userInput.replaceAll(" +", " "); // Replace multiple comma to single comma
         userInput = removeLeadingSpaces(userInput); //Remove leading spaces
+
+        if (userInput.contains(",")) {
+            String[] userInputTemp = userInput.split(",");
+            if (userInputTemp.length == 2) {
+                twoD = checkOrderOfLatAndLong(userInputTemp);
+                userInput = twoD[0] + " " + twoD[1];
+                return userInput;
+            } else {
+                userInput = userInput.replaceAll(",", " ");
+            }
+            
+        }
 
         //System.out.println("checkOrderOfNSEW prep: " + userInput);  //debugging
 
