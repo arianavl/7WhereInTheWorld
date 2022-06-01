@@ -16,7 +16,7 @@ This will then allow the user to enter in values via the terminal
 
 Alternativly, you can compile and pass in a txt file with the inputs.
 
-'java WhereInTheWorld2 < input.txt'
+`java WhereInTheWorld2 < input.txt`
 
 ## Test cases
 
