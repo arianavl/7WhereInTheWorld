@@ -32,4 +32,5 @@ Once the user has finished entering values or all the values have been read from
 
 These are screen shots of my GEOjson file after processing input.txt and the same file being inserted into geojson.io
 
-![alt text](screenShot1.png "Description goes here")
+![map.geojson file](screenShot1.png "map.geojson file")
+![file opened via geojson.io](screenShot2.png "file opened via geojson.io")
