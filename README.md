@@ -33,4 +33,13 @@ Once the user has finished entering values or all the values have been read from
 These are screen shots of my GEOjson file after processing input.txt and the same file being inserted into geojson.io
 
 ![map.geojson file](screenShot1.png "map.geojson file")
+![map.geojson file](screenShot3.png "map.geojson file")
 ![file opened via geojson.io](screenShot2.png "file opened via geojson.io")
+
+## My Approach Continued
+
+When it came to validating and converting different representations of latitude and longitude, I first dealt with cleaning the string of unwanted extra characters then converted any North, South, East, and West labels into being represented by a negative sign instead, while at the same time, ensuring that the labels used where valid.
+
+I then used the length of the users Input once split into an array to determine what method was needed to convert the values into valid lat and long, doing validation on the values along the way.
+
+I then compared the converted values to the regex to determine whether they were valid coordinates or not.
