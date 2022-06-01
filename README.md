@@ -32,5 +32,4 @@ Once the user has finished entering values or all the values have been read from
 
 These are screen shots of my GEOjson file after processing input.txt and the same file being inserted into geojson.io
 
-image.png
-Screen Shot 2022-06-01 at 2.57.46 PM.png
+![alt text](screenShot1.png "Description goes here")
