@@ -1,3 +1,5 @@
+package WhereInTheWorldFinal;
+
 import java.io.FileWriter;
 import java.util.Scanner;
 import java.util.regex.*;
