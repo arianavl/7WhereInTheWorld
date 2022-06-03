@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "OwheoOne" },
+      "geometry": { "type": "Point", "coordinates": [170.517805, -45.867111] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "OwheoTwo" },
+      "geometry": { "type": "Point", "coordinates": [170.517805, -45.867111] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "OwheoThree" },
+      "geometry": { "type": "Point", "coordinates": [170.517806, -45.8671] }
+    }
+  ]
+}

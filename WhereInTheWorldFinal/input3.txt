@@ -1,0 +1,3 @@
+45°52'01.6"S 170°31'04.1"E OwheoOne
+45 d 52 m 1.6s S, 170 d 31 m 4.1s E OwheoTwo
+-45.867100, 170.517806 OwheoThree

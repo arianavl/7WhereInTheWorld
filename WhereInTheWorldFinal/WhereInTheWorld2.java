@@ -1,6 +1,7 @@
-package WhereInTheWorldFinal;
+//package WhereInTheWorldFinal;
 
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.*;
 
@@ -13,15 +14,20 @@ import java.util.regex.*;
 public class WhereInTheWorld2 {
     private static final String FILE_START = "{\"type\":\"FeatureCollection\",\"features\":[";
     private static final String FILE_MIDDLE_START = "{\"type\":\"Feature\",\"properties\": {},\"geometry\": {\"type\": \"Point\",\"coordinates\": [";
+    private static final String FILE_MIDDLE_START_LABEL = "{\"type\":\"Feature\",\"properties\": {";
+    private static final String FILE_MIDDLE_START_AFTER_LABEL = "},\"geometry\": {\"type\": \"Point\",\"coordinates\": [";
+    
     private static final String FILE_MIDDLE_END = "]}},";
     private static final String FILE_END = "]}}]}";
     private static final String STANDARD_LONG = "^-?([1-9]{1}[0-9]{1}|[0]{1,2}|[1-9]{1,2}|1[0-7][0-9]|180)([.][0-9]{6})$";
     private static final String STANDARD_LAT = "^-?([1-8]{1}[0-9]{1}|[0-9]{1,2}|90)([.][0-9]{6})$";
     private static final String STANDARD_WORD = "([a-zA-Z,]{2,20})$";
     private static String content = FILE_START;
-    //private static String validCoords = "";
+    private static String validCoords = "";
     private static String errorMessage = "";
     private static int nums, letters, total;
+    private static boolean hasLabel;
+    private static String label = "";
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -34,6 +40,7 @@ public class WhereInTheWorld2 {
             nums = 0;
             letters = 0;
             total = 0;
+            hasLabel = false;
 
 
             userInput = userInput.replaceAll(",+", ","); // Replace multiple comma to single comma
@@ -47,7 +54,8 @@ public class WhereInTheWorld2 {
             }
 
             userInput = userInput.replaceAll(", ", ","); // Replace multiple comma to single comma
-            userInput = userInput.replaceAll("[°\'\"″]", "");
+            userInput = userInput.replaceAll("[°\'\"″]", " ");
+            userInput = userInput.replaceAll("[dms]", "");
 
             //Get rid of all extra labels and convert compass lables into N, S, E, W
             // Seperated with spaces
@@ -67,7 +75,7 @@ public class WhereInTheWorld2 {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
-            //System.out.println("1: " + userInput); //debugging
+            System.out.println("1: " + userInput); //debugging
 
             // Error checking
             if (userInput.length() == 0 || userInput.length() == 1) {
@@ -90,7 +98,7 @@ public class WhereInTheWorld2 {
                 continue;
             }
 
-            //System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
+            System.out.println("2: " + Arrays.toString(userInputArray)); //debugging
 
             //Total
             total = userInputArray.length;
@@ -121,7 +129,7 @@ public class WhereInTheWorld2 {
 
             
 
-            //System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
+            System.out.println("3: " + Arrays.toString(latAndLong)); //debugging
 
             //Check to see if array seems correct
             if (errorMessage != "") {
@@ -138,10 +146,10 @@ public class WhereInTheWorld2 {
 
             // Check decimal Places
             for (int i = 0; i < latAndLong.length; i++) {
-                //System.out.println("DECIMALS 8: " + latAndLong[i]); //Debugging
+                System.out.println("DECIMALS 8: " + latAndLong[i]); //Debugging
 
                 String[] decimalArray = latAndLong[i].split("[.]");
-                //System.out.println(Arrays.toString(decimalArray)); //Debugging
+                System.out.println(Arrays.toString(decimalArray)); //Debugging
 
                 if (decimalArray.length == 2) {
                     if (decimalArray[1].length() != 6) {
@@ -160,17 +168,20 @@ public class WhereInTheWorld2 {
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
             }
-            boolean latIsValid = Pattern.matches(STANDARD_LAT, latAndLong[0]);
-            boolean longIsValid = Pattern.matches(STANDARD_LONG, latAndLong[1]);
+
+            latAndLong = swapCoords(latAndLong);
+
+            boolean latIsValid = Pattern.matches(STANDARD_LONG, latAndLong[0]);
+            boolean longIsValid = Pattern.matches(STANDARD_LAT, latAndLong[1]);
             //If valid Write to geoJSON file
             if (latIsValid && longIsValid) {
                 addToContent(latAndLong[0], latAndLong[1]);
-                //validCoords = Arrays.toString(latAndLong);
-                //System.out.println("Final: " + validCoords);
+                validCoords = Arrays.toString(latAndLong);
+                System.out.println("Final: " + validCoords);
                 writeToFile(content, "map.geojson");
             } else {
                 errorMessage = "Unable to Process: ";
-                //System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
+                System.out.println("20: Lat and Long not valid" + Arrays.toString(latAndLong)); //Debugging
                 System.out.println(errorMessage + userInputOriginal);
                 continue;
 
@@ -470,7 +481,7 @@ public class WhereInTheWorld2 {
                 Double min = Double.parseDouble(userInput[i + 1]);
 
                 //Check values are valid
-                if (min < 60 && deg < 90) {
+                if (min < 60 && deg < 181) {
                     //Trying to catch case if deg is negative - currently in process
                     if (deg < 0) {
                         deg = Double.parseDouble(userInput[i].substring(1));
@@ -589,6 +600,14 @@ public class WhereInTheWorld2 {
         }
 
         // Remove labels
+        for (int i = 0; i < userInput.length(); i++) {
+            String temp = userInput.substring(i);
+            if (Pattern.matches(STANDARD_WORD, temp)) {
+                hasLabel = true;
+                label = temp;
+                break;
+            }
+        }
         userInput = userInput.replaceAll(STANDARD_WORD, ""); // Replace multiple comma to single comma
         //System.out.println("After replace standardWord: " + userInput); //Debugging
         
@@ -830,8 +849,17 @@ public class WhereInTheWorld2 {
         if (content.charAt(content.length() - 1) != '[') {
             content = content + FILE_MIDDLE_END;
         }
-        content = content + FILE_MIDDLE_START + validLong + ", " + validLat;
+        if (hasLabel) {
+            content = content + FILE_MIDDLE_START_LABEL + "\"name\": \"" + label + "\"" + FILE_MIDDLE_START_AFTER_LABEL
+                    + validLong + ", " + validLat;
+        } else {
+
+            content = content + FILE_MIDDLE_START + validLong + ", " + validLat;
+        }
     }
+
+       
+    
 
     /**
      * Method that writes the new content into the file with file Name and 
