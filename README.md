@@ -1,6 +1,6 @@
 # Etude 7 Where in the World
 
-Reads in co-ordinates, allowing for differnet formats and validates the inputs, outputting valid inputs into a geojson file.
+Reads in co-ordinates, allowing for different formats and validates the inputs, outputting valid inputs into a geojson file.
 
 ## To compile the program
 
